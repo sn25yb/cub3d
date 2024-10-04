@@ -10,9 +10,18 @@ void	exit_game(t_game *game, int code)
 	// mlx_destroy_window(game->mlx, game->win);
 }
 
+void	init(t_game *game, char *file)
+{
+	ft_memset(game, 0, sizeof(t_game));
+	game->map.file = ft_strdup(file);
+	if (!game->map.file)
+		exit_game(game, EXTRA);
+}	
 
 int	main (int argc, char *argv[])
 {
+	t_game	game;
+
 	/* valid */
 	//valid_argv 
 	//valid_map

@@ -11,7 +11,8 @@ CPPFLAGS = -I. \
 		   -I./mlx \
 		   -MMD -MP
 
-SRCS = main.c
+SRCS = main.c \
+	   srcs/map.c
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)

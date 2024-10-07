@@ -25,6 +25,7 @@ SRCS = main.c \
 	   $(SRCDIR1)setting.c \
 	   $(SRCDIR1)valid.c \
 	   $(SRCDIR1)lib.c \
+	   $(SRCDIR1)img.c \
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)

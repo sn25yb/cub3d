@@ -49,10 +49,10 @@ typedef struct s_map
 
 typedef struct s_image
 {
-	// void	**character[4];
+	void	*character[5][4];
 	void	*object[5];
 	void	*inventory[2];
-	void	*map[4]; //EA 0 //WE 1 //SO 2 //NO 3
+	void	*wall[4]; //EA 0 //WE 1 //SO 2 //NO 3
 	t_rgb	ceiling;
 	t_rgb	floor;
 }	t_image;
@@ -84,5 +84,6 @@ void	check_valid(t_game *game, int argc, char **argv);
 void	free_array(char **arr);
 char    *ft_realloc(char *ptr, size_t size);
 void	add(t_game *game, char *file);
+void	add_image(t_game *game);
 
 #endif

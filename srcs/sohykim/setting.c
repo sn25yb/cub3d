@@ -42,12 +42,22 @@ t_err	check_rgb(t_rgb *rgb, char *rgb_line)
 	return (code);
 }
 
+int	add_wall(t_game *game, char *file, int index)
+{
+	int	size[2];
+
+	if (game->image.wall[index])
+		return (MAP_FAILED);
+	game->image.wall[index] = mlx_xpm_file_to_image(game->mlx, file, &size[0], &size[1]);
+	if (!game->image.wall[index])
+		return (EXTRA);
+	return (EXIT_SUCCESS);
+}
+
 t_err	check_info(t_game *game, char **info)
 {
 	const char	*id[6] = {"EA", "WE", "SO", "NO", "F", "C"};
 	int			index;
-	int			size[2];
-	int			code;
 
 	index = 0;
 	if (!info[0] || !info[1] || info[2])
@@ -55,15 +65,7 @@ t_err	check_info(t_game *game, char **info)
 	while (index < 4)
 	{
 		if (!ft_memcmp(info[0], id[index], ft_strlen(id[index]) + 1))
-		{
-			if (game->image.map[index])
-				return (MAP_FAILED);
-			// game->image.map[index] = mlx_png_file_to_image(game->mlx, info[1], &size[0], &size[1]);
-			game->image.map[index] = mlx_xpm_file_to_image(game->mlx, info[1], &size[0], &size[1]);
-			if (!game->image.map[index])
-				return (EXTRA); // IMG_FAILED 해야되는지 확인
-			return (EXIT_SUCCESS);
-		}
+			return (add_wall(game, info[1], index));
 		index++;
 	}
 	if (!ft_memcmp(info[0], id[index], 2))
@@ -71,16 +73,14 @@ t_err	check_info(t_game *game, char **info)
 		if (game->image.floor.flag)
 			return (MAP_FAILED);
 		game->image.floor.flag = 1;
-		code = check_rgb(&game->image.floor, info[1]);
-		return (code);
+		return (check_rgb(&game->image.floor, info[1]));
 	}
 	if (!ft_memcmp(info[0], id[++index], 2))
 	{
 		if (game->image.ceiling.flag)
 			return (MAP_FAILED);
 		game->image.ceiling.flag = 1;
-		code = check_rgb(&game->image.ceiling, info[1]);
-		return (code);
+		return (check_rgb(&game->image.ceiling, info[1]));
 	}
 	return (MAP_FAILED);
 }
@@ -176,12 +176,14 @@ void	add(t_game *game, char *file)
 	if (fd == -1)
 		exit_game(game, EXTRA);
 	code = add_info(game, fd);
-	// printf("info: %d\n", code);
+	printf("info: %d\n", code);
 	if (!code)
 		code = add_map(game, fd);
-	// printf("map: %d\n", code);
+	printf("map: %d\n", code);
 	close(fd);
 	if (code)
 		exit_game(game, code);
+	add_image(game);
+	printf("img: %d\n", code);
 	// add_image;
 }

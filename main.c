@@ -38,7 +38,6 @@ int	main (int argc, char *argv[])
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.object[4], 128, 65);
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.inventory[0], 0, 100);
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.inventory[1], 0, 150);
-	
 	/* hook & loop */
 	// mlx_hook(game_info->win, KEY_PRESS, 0, &event_wt_user, &game_info);
 	mlx_hook(game.win, DESTROY_NOTIFY, 0, &destroy_game, &game);

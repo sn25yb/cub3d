@@ -1,23 +1,5 @@
 # include "../../cub3d.h"
 
-char    *ft_realloc(char *ptr, size_t size)
-{
-    char    *ret;
-    size_t  id;
-
-    ret = ft_calloc(size, sizeof(char));
-    if (!ret)
-        return (NULL);
-    id = 0;
-    while (id < size && ptr[id])
-    {
-        ret[id] = ptr[id];
-        id++;
-    }
-    free(ptr);
-    return (ret);
-}
-
 void	free_array(char **arr)
 {
 	int	cnt;
@@ -28,4 +10,26 @@ void	free_array(char **arr)
 	while (arr[cnt])
 		free(arr[cnt++]);
 	free(arr);
+}
+
+char	**arrcpy(char **arr)
+{
+	int		index;
+	int		size;
+	char	**ret;
+
+	size = 0;
+	index = 0;
+	while (arr[size])
+		size++;
+	ret = ft_calloc(size + 1, sizeof(char *));
+	if (ret)
+	{
+		while (index < size)
+		{
+			ret[index] = ft_strdup(arr[index]);
+			index++;
+		}
+	}
+	return (ret);
 }

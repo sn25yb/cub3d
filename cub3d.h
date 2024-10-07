@@ -9,6 +9,7 @@
 # include "ft_err.h"
 # include "srcs/sohykim/map.h"
 # include "libgnl/get_next_line.h"
+# include "queue/queue.h"
 # define DESTROY_NOTIFY 17
 # define KEY_RELEASE 3
 # define KEY_PRESS 2

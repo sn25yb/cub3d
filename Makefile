@@ -3,16 +3,19 @@ CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -L./libft \
 		  -L./mlx \
 		  -L./libgnl \
+		  -L./queue \
 
 LDLIBS = -lft \
 		 -lmlx \
 		 -lgnl \
+		 -lqueue \
 		 -lm
 
 CPPFLAGS = -I. \
 		   -I./libft \
 		   -I./mlx \
 		   -I./libgnl \
+		   -I./queue \
 		   -MMD -MP
 
 MLXFLAG = -framework OpenGL -framework AppKit
@@ -36,6 +39,7 @@ all : $(NAME)
 $(NAME): $(OBJS)
 	make -C mlx
 	make -C libft
+	make -C queue
 	make -C libgnl
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(MLXFLAG) -o $@ $^
 
@@ -51,6 +55,7 @@ $(SRCDIR1)%.o : $(SRCDIR1)%.c
 clean :
 	make clean -C mlx
 	make clean -C libft
+	make clean -C queue
 	make clean -C libgnl
 	rm -f $(OBJS)
 	rm -f $(DEPS)
@@ -58,6 +63,7 @@ clean :
 fclean : clean
 	rm -f libft/libft.a
 	rm -f mlx/libmlx.a
+	rm -f queue/libqueue.a
 	rm -f libgnl/libgnl.a
 	rm -f $(NAME)
 

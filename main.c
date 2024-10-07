@@ -16,7 +16,7 @@ int	main (int argc, char *argv[])
 	// image 및 지도 add
 	add(&game, argv[1]);
 
-	game.win = mlx_new_window(game.mlx, screen_width, screen_height, "baobao");
+	game.win = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "baobao");
 	if (!game.win)
 		exit_game(&game, EXTRA);
 	
@@ -41,7 +41,7 @@ int	main (int argc, char *argv[])
 	
 	/* hook & loop */
 	// mlx_hook(game_info->win, KEY_PRESS, 0, &event_wt_user, &game_info);
-	// mlx_hook(game_info->win, DESTROY_NOTIFY, 0, &exit_function, &game_info);
+	mlx_hook(game.win, DESTROY_NOTIFY, 0, &destroy_game, &game);
 	// mlx_loop_hook(game_info->mlx, &event_wo_user, &game_info);
 	mlx_loop(game.mlx);
 }

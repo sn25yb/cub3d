@@ -9,8 +9,18 @@
 # include "ft_err.h"
 # include "srcs/sohykim/map.h"
 # include "libgnl/get_next_line.h"
-# define screen_width 640
-# define screen_height 480
+# define DESTROY_NOTIFY 17
+# define KEY_RELEASE 3
+# define KEY_PRESS 2
+# define KEY_UP 13
+# define KEY_DOWN 1
+# define KEY_LEFT 0
+# define KEY_RIGHT 2
+# define KEY_ENTER 36
+# define KEY_ESC 53
+
+# define SCREEN_WIDTH 640
+# define SCREEN_HEIGHT 480
 
 typedef enum e_objs
 {
@@ -85,5 +95,8 @@ void	free_array(char **arr);
 char    *ft_realloc(char *ptr, size_t size);
 void	add(t_game *game, char *file);
 void	add_image(t_game *game);
+t_err	check_info(t_game *game, char **info);
+int		add_wall(t_game *game, char *file, int index);
+int		destroy_game(t_game *game);
 
 #endif

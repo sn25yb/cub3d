@@ -7,15 +7,25 @@
 # include "mlx/mlx.h"
 # include "libft/libft.h"
 # include "ft_err.h"
-# include "map.h"
+# include "srcs/sohykim/map.h"
+# include "libgnl/get_next_line.h"
 # define screen_width 640
 # define screen_height 480
 
-typedef enum e_boolean
+typedef enum e_objs
 {
-	FALSE,
-	TRUE
-}	t_boolean;
+	no_obj,
+	door,
+	wotou,
+	boots,
+	carrot,
+	kangbao,
+	LEBAO,
+	AIBAO,
+	FUBAO,
+	HUIBAO,
+	RUIBAO
+}	t_objs;
 
 typedef struct s_coord
 {
@@ -25,30 +35,35 @@ typedef struct s_coord
 
 typedef struct s_rgb
 {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
+	int	r;
+	int	g;
+	int	b;
+	int flag;
 }	t_rgb;
 
 typedef struct s_map
 {
 	char	**map;
-	char	*file;
+	t_coord	size;
 }	t_map;
 
 typedef struct s_image
 {
-	void	**character[4];
+	// void	**character[4];
 	void	*object[5];
 	void	*inventory[2];
-	void	*map[4];
+	void	*map[4]; //EA 0 //WE 1 //SO 2 //NO 3
 	t_rgb	ceiling;
 	t_rgb	floor;
 }	t_image;
 
+// EA 1,0
+// WE -1,0
+// NO 0, 1
+//SO 0, -1
 typedef struct s_player
 {
-	t_coord	pos;
+	t_coord pos; 
 	t_coord dir;
 }	t_player;
 
@@ -56,12 +71,18 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
-	t_map		map;
+	char		**map;
 	t_player	player;
 	t_image		image;
 }	t_game;
 
-int	inventory(t_game *game);
-int	is_valid(t_game *game);
+int		inventory(t_game *game);
+int		is_valid(t_game *game);
+void	print_msg(int code);
+void	exit_game(t_game *game, int code);
+void	check_valid(t_game *game, int argc, char **argv);
+void	free_array(char **arr);
+char    *ft_realloc(char *ptr, size_t size);
+void	add(t_game *game, char *file);
 
 #endif

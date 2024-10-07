@@ -2,17 +2,29 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -L./libft \
 		  -L./mlx \
+		  -L./libgnl \
 
 LDLIBS = -lft \
 		 -lmlx \
+		 -lgnl \
+		 -lm
 
 CPPFLAGS = -I. \
 		   -I./libft \
 		   -I./mlx \
+		   -I./libgnl \
 		   -MMD -MP
 
+MLXFLAG = -framework OpenGL -framework AppKit
+
+SRCDIR1 = ./srcs/sohykim/
+
 SRCS = main.c \
-	   srcs/map.c
+	   exit.c \
+	   $(SRCDIR1)map.c \
+	   $(SRCDIR1)setting.c \
+	   $(SRCDIR1)valid.c \
+	   $(SRCDIR1)lib.c \
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)
@@ -23,22 +35,29 @@ all : $(NAME)
 $(NAME): $(OBJS)
 	make -C mlx
 	make -C libft
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $@ $^
+	make -C libgnl
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(MLXFLAG) -o $@ $^
 
 -include $(DEPS)
 
+$(SRCDIR1)%.o : $(SRCDIR1)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+
 %.o : %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 clean :
 	make clean -C mlx
 	make clean -C libft
+	make clean -C libgnl
 	rm -f $(OBJS)
 	rm -f $(DEPS)
 
 fclean : clean
 	rm -f libft/libft.a
 	rm -f mlx/libmlx.a
+	rm -f libgnl/libgnl.a
 	rm -f $(NAME)
 
 re : fclean

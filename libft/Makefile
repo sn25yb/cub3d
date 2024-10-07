@@ -51,7 +51,6 @@ bonus : $(NAME)
 
 clean:
 	rm -f $(OBJS)
-	rm -f $(OBJB)
 
 fclean: clean
 	rm -f $(NAME)

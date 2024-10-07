@@ -3,73 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohykim <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sohykim <sohykim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 13:06:13 by sohykim           #+#    #+#             */
-/*   Updated: 2024/08/01 10:20:45 by sohykim          ###   ########.fr       */
+/*   Created: 2023/09/12 11:22:53 by sohykim           #+#    #+#             */
+/*   Updated: 2023/09/12 11:22:55 by sohykim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-static size_t	ft_strchlen(char const *s, char c)
+#include <stdlib.h>
+
+int	is_seperator(char ch, char *charset)
 {
-	size_t	index;
-	size_t	len;
-
-	len = 0;
-	index = 0;
-	while (s[index])
+	while (*charset)
 	{
-		if (index == 0 && s[index] != c)
-			len++;
-		else if (index > 0 && s[index - 1] == c && s[index] != c)
-			len++;
-		index++;
+		if (ch == *charset)
+			return (1);
+		charset++;
 	}
-	return (len);
-}
-
-static size_t	ft_eachlen(const char *s, char c)
-{
-	if (ft_strchr(s, c))
-		return (ft_strchr(s, c) - s);
-	return (ft_strlen(s));
-}
-
-static char	**free_arr(char **strs, size_t size)
-{
-	size_t	index;
-
-	index = 0;
-	while (index < size)
-		free(strs[index++]);
-	free(strs);
 	return (0);
 }
 
-char	**ft_split(char const *s, char c)
+int	ft_strslen(char *str, char *charset)
 {
-	char	**result;
-	size_t	index;
-	size_t	len;
+	int	len;
 
 	len = 0;
-	index = 0;
-	result = ft_calloc(ft_strchlen(s, c) + 1, sizeof(char *));
-	if (result == NULL)
-		return (NULL);
-	while (index < ft_strchlen(s, c))
+	while (is_seperator(str[len], charset) == 0 && str[len])
+		len++;
+	return (len);
+}
+
+int	ft_arrlen(char *str, char *charset)
+{
+	int	count;
+	int	flag;
+
+	count = 0;
+	flag = 1;
+	while (*str)
 	{
-		if (s[len] == c)
-			len++;
-		else
+		if (is_seperator(*str, charset) == 0 && flag)
 		{
-			result[index] = ft_calloc(ft_eachlen(&s[len], c) + 1, sizeof(char));
-			if (result[index] == NULL)
-				return (free_arr(result, index));
-			ft_strlcpy(result[index], &s[len], ft_eachlen(&s[len], c) + 1);
-			len += ft_strlen(result[index++]);
+			flag = 0;
+			count++;
 		}
+		else if (is_seperator(*str, charset) && !flag)
+			flag = 1;
+		str++;
 	}
+	return (count);
+}
+
+char	*ft_strcpy(char *dest, char *src, int size)
+{
+	int	index;
+
+	index = 0;
+	while (src[index] && index < size)
+	{
+		dest[index] = src[index];
+		index++;
+	}
+	dest[index] = 0;
+	return (dest);
+}
+
+char	**ft_split(char *str, char *charset)
+{
+	char	**result;
+	char	*str_copy;
+	int		index;
+	int		arr_len;
+	int		str_len;
+
+	str_copy = str;
+	index = 0;
+	arr_len = ft_arrlen(str, charset);
+	result = (char **)malloc(sizeof(char *) * (arr_len + 1));
+	if (result == NULL)
+		return (0);
+	while (index <= arr_len)
+	{
+		while (is_seperator(*str_copy, charset))
+				str_copy++;
+		str_len = ft_strslen(str_copy, charset);
+		result[index] = (char *)malloc(sizeof(char) * (str_len + 1));
+		if (result[index] == NULL)
+			return (0);
+		ft_strcpy(result[index++], str_copy, str_len);
+		str_copy = str_copy + str_len;
+	}
+	result[arr_len] = 0;
 	return (result);
 }

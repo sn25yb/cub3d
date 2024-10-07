@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-static t_bool	ft_isspace(char ch)
+static t_boolean	ft_isspace(char ch)
 {
 	if (ch >= 9 && ch <= 13)
 		return (TRUE);

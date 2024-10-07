@@ -32,6 +32,24 @@ static t_queue	*_last(t_queue *q)
 	return (q);
 }
 
+void	free_queue(t_queue	*q)
+{
+	t_queue	*tmp;
+
+	while (q)
+	{
+		tmp = q->next;
+		free(q);
+		q = tmp;
+	}
+}
+
+void	free_queues(t_queues *q)
+{
+	free_queue(q->head);
+	free(q);
+}
+
 int	push(t_queues **q, t_pair xy)
 {
 	t_queue	*last;
@@ -55,23 +73,6 @@ int	push(t_queues **q, t_pair xy)
 	return (EXIT_SUCCESS);
 }
 
-void	free_queue(t_queue	*q)
-{
-	t_queue	*tmp;
-
-	while (q)
-	{
-		tmp = q->next;
-		free(q);
-		q = tmp;
-	}
-}
-
-void	free_queues(t_queues *q)
-{
-	free_queue(q->head);
-	free(q);
-}
 
 void	pop(t_queues *q)
 {

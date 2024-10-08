@@ -26,11 +26,11 @@
 typedef enum e_objs
 {
 	no_obj,
-	door,
 	wotou,
 	boots,
 	carrot,
 	kangbao,
+	door,
 	LEBAO,
 	AIBAO,
 	FUBAO,
@@ -85,6 +85,7 @@ typedef struct s_game
 	char		**map;
 	t_player	player;
 	t_image		image;
+	t_queues	inventory;
 }	t_game;
 
 int		inventory(t_game *game);
@@ -99,5 +100,7 @@ void	add_image(t_game *game);
 t_err	check_info(t_game *game, char **info);
 int		add_wall(t_game *game, char *file, int index);
 int		destroy_game(t_game *game);
+int 	isit_inventory(t_queues inv, t_objs num);
+void	pop_target(t_queues *inv, t_objs num);
 
 #endif

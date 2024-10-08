@@ -73,6 +73,30 @@ int	push(t_queues **q, t_pair xy)
 	return (EXIT_SUCCESS);
 }
 
+int	pushnum(t_queues **q, int num)
+{
+	t_queue	*last;
+	t_queue	*new;
+
+	new = create_queue(make_pair(0, 0));
+	new->num = num;
+	if (!new)
+		return (EXTRA);
+	if (!*q)
+		*q = create_queues();
+	if (!*q)
+	{
+		free_queue(new);
+		return (EXTRA);
+	}
+	last = _last((*q)->head);
+	if (!last)
+		(*q)->head = new;
+	else
+		last->next = new;
+	return (EXIT_SUCCESS);
+}
+
 
 void	pop(t_queues *q)
 {

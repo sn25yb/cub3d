@@ -1,15 +1,20 @@
 #ifndef CUB3D_H
 # define CUB3D_H
+
 # include <math.h>
 # include <sys/time.h>
 # include <fcntl.h>
 # include <stdio.h>
+
 # include "mlx/mlx.h"
 # include "libft/libft.h"
 # include "ft_err.h"
+
 # include "srcs/sohykim/map.h"
 # include "libgnl/get_next_line.h"
 # include "queue/queue.h"
+# include "srcs/yubshin/image3d.h"
+
 # define DESTROY_NOTIFY 17
 # define KEY_RELEASE 3
 # define KEY_PRESS 2
@@ -44,29 +49,12 @@ typedef struct s_coord
 	double x;
 }	t_coord;
 
-typedef struct s_rgb
-{
-	int	r;
-	int	g;
-	int	b;
-	int flag;
-}	t_rgb;
-
 typedef struct s_map
 {
 	char	**map;
 	t_coord	size;
 }	t_map;
 
-typedef struct s_image
-{
-	void	*character[5][4];
-	void	*object[5];
-	void	*inventory[2];
-	void	*wall[4]; //EA 0 //WE 1 //SO 2 //NO 3
-	t_rgb	ceiling;
-	t_rgb	floor;
-}	t_image;
 
 // EA 1,0
 // WE -1,0
@@ -85,6 +73,7 @@ typedef struct s_game
 	char		**map;
 	t_player	player;
 	t_image		image;
+	t_texture	texture;
 	t_queues	inventory;
 }	t_game;
 

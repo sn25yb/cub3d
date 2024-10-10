@@ -74,17 +74,17 @@ t_err	check_info(t_game *game, char **info)
 	}
 	if (!ft_memcmp(info[0], id[index], 2))
 	{
-		if (game->image.floor.flag)
+		if (game->texture.floor.flag)
 			return (MAP_FAILED);
-		game->image.floor.flag = 1;
-		return (check_rgb(&game->image.floor, info[1]));
+		game->texture.floor.flag = 1;
+		return (check_rgb(&game->texture.floor, info[1]));
 	}
 	if (!ft_memcmp(info[0], id[++index], 2))
 	{
-		if (game->image.ceiling.flag)
+		if (game->texture.ceiling.flag)
 			return (MAP_FAILED);
-		game->image.ceiling.flag = 1;
-		return (check_rgb(&game->image.ceiling, info[1]));
+		game->texture.ceiling.flag = 1;
+		return (check_rgb(&game->texture.ceiling, info[1]));
 	}
 	return (MAP_FAILED);
 }

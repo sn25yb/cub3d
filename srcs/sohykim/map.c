@@ -1,5 +1,12 @@
 #include "../cub3d.h"
 
+t_boolean   is_wall(char c)
+{
+    if (c == '1' || c == 'd')
+        return (TRUE);
+    return (FALSE);
+}
+
 t_boolean   check_left(char *line, int id)
 {
     // printf("left\n");
@@ -75,7 +82,7 @@ t_err   is_surrbywall(char **map)
         while (map[xy.y][xy.x])
         {
             // printf("%d %d %c\n", xy.y, xy.x, map[xy.y][xy.x]);
-            if (map[xy.y][xy.x] != '1')
+            if (!is_wall(map[xy.y][xy.x]))
             {
                 if (!check_bottom(check, xy) || !check_top(check, xy) || \
                 !check_right(check[xy.y], xy.x) || !check_left(check[xy.y], xy.x))
@@ -94,7 +101,7 @@ t_err   is_surrbywall(char **map)
     return (EXIT_SUCCESS);
 }
 
-t_boolean   has_validobj(char **map)
+t_err   has_validobj(char **map)
 {
     t_pair  xy;
     int     objs[11];
@@ -122,22 +129,20 @@ t_boolean   has_validobj(char **map)
                         int nx = dc[i] + xy.x;
                         if (ny < 0 || nx < 0 || !map[ny])
                         {
-                            if (map[ny][nx] != '1' && map[ny][nx] != ' ' && map[ny][nx])
-                            {
-                                return (FALSE);
-                            }
+                            if (!is_wall(map[ny][nx]) && map[ny][nx] != ' ' && map[ny][nx])
+                                return (MAP_FAILED);
                         }
                     }
                 }
                 else if (map[xy.y][xy.x] == 'N' || map[xy.y][xy.x] == 'S' || map[xy.y][xy.x] == 'W' || map[xy.y][xy.x] == 'E')
                     objs[id]++;
                 else if (map[xy.y][xy.x] != '0')
-                    return (FALSE);
+                    return (MAP_FAILED);
             }
             else if (id != door)
                 objs[id]++;
             if (objs[id] > 1)
-                return (FALSE);
+                return (MAP_FAILED);
             xy.x++;
         }
         if (map[xy.y][xy.x++] == '1')
@@ -148,35 +153,34 @@ t_boolean   has_validobj(char **map)
     for (int i = 0; i < 11; i++)
     {
         if (i != door && !objs[i])
-            return (FALSE);
+            return (MAP_FAILED);
     }
     // printf("obj true\n");
-    return (TRUE);
+    return (EXIT_SUCCESS);
+}
+
+t_err   check_validroute(char   **map)
+{
+    (void) map;
+    return (EXIT_SUCCESS);
+}
+
+t_err   check_validdoor(char **map)
+{
+    (void) map;
+    return (EXIT_SUCCESS);
 }
 
 t_err   check_validmap(char **map)
 {
-    if (is_surrbywall(map) || !has_validobj(map))
-        return (MAP_FAILED);
-    return (EXIT_SUCCESS);
+    t_err   code;
+
+    code = is_surrbywall(map);
+    if (!code)
+        code = has_validobj(map);
+    if (!code)
+        code = check_validroute(map);
+    if (!code)
+        code = check_validdoor(map);
+    return (code);
 }
-// t_boolean   is_validspace(char  **map)
-// {
-//     t_pair  xy;
-
-//     xy.y = 0;
-//     while (map[xy.y])
-//     {
-//         xy.x = 0;
-//         while (map[xy.y][xy.x])
-//         {
-//             if (map[xy.y][xy.x] == ' ')
-//             {
-                
-//             }
-//             xy.x++;           
-//         }
-//         xy.y++;
-//     }
-
-// }

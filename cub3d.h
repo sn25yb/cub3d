@@ -10,7 +10,7 @@
 # include "libft/libft.h"
 # include "ft_err.h"
 
-# include "srcs/sohykim/map.h"
+# include "srcs/sohykim/map2d/map2d.h"
 # include "libgnl/get_next_line.h"
 # include "queue/queue.h"
 # include "srcs/yubshin/image3d.h"
@@ -49,11 +49,6 @@ typedef struct s_coord
 	double x;
 }	t_coord;
 
-typedef struct s_map
-{
-	char	**map;
-	t_coord	size;
-}	t_map;
 
 
 // EA 1,0
@@ -74,7 +69,8 @@ typedef struct s_game
 	t_player	player;
 	t_image		image;
 	t_texture	texture;
-	t_queues	inventory;
+	t_inventory	inventory;
+	t_map		minimap;
 }	t_game;
 
 int		inventory(t_game *game);
@@ -89,11 +85,11 @@ void	add_image(t_game *game);
 t_err	check_info(t_game *game, char **info);
 int		add_wall(t_game *game, char *file, int index);
 int		destroy_game(t_game *game);
-int 	isit_inventory(t_queues inv, t_objs num);
-void	pop_target(t_queues *inv, t_objs num);
+int 	isit_inventory(t_queues inv, int num);
+void	pop_target(t_queues *inv, int num);
 t_objs	get_num_objs(char c);
 char	**arrcpy(char **arr);
 t_err   check_validmap(char **map);
-
+void	add_image_inventory(t_game *game);
 
 #endif

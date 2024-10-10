@@ -21,6 +21,8 @@ CPPFLAGS = -I. \
 MLXFLAG = -framework OpenGL -framework AppKit
 
 SRCDIR1 = ./srcs/sohykim/
+SRCDIR3 = ./srcs/sohykim/map2d/
+SRCDIR2 = ./srcs/yubshin/
 
 SRCS = main.c \
 	   exit.c \
@@ -28,7 +30,10 @@ SRCS = main.c \
 	   $(SRCDIR1)setting.c \
 	   $(SRCDIR1)valid.c \
 	   $(SRCDIR1)lib.c \
-	   $(SRCDIR1)img.c \
+	   $(SRCDIR1)lib.c \
+	   $(SRCDIR3)inventory.c \
+	   $(SRCDIR2)image3d.c \
+
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)
@@ -48,6 +53,11 @@ $(NAME): $(OBJS)
 $(SRCDIR1)%.o : $(SRCDIR1)%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
+$(SRCDIR2)%.o : $(SRCDIR2)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+$(SRCDIR3)%.o : $(SRCDIR3)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 %.o : %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<

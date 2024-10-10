@@ -43,6 +43,7 @@ t_boolean   check_bottom(char **check, t_pair xy)
             return (FALSE);
         if (check[xy.y][xy.x] == '1')
             return (TRUE);
+        else if (check)
         xy.y++;
     }
     return (FALSE);
@@ -128,10 +129,9 @@ t_err   has_validobj(char **map)
                         int ny = dr[i] + xy.y;
                         int nx = dc[i] + xy.x;
                         if (ny < 0 || nx < 0 || !map[ny])
-                        {
-                            if (!is_wall(map[ny][nx]) && map[ny][nx] != ' ' && map[ny][nx])
-                                return (MAP_FAILED);
-                        }
+                            continue ;
+                        if (!is_wall(map[ny][nx]) && map[ny][nx] != ' ' && map[ny][nx])
+                            return (MAP_FAILED);
                     }
                 }
                 else if (map[xy.y][xy.x] == 'N' || map[xy.y][xy.x] == 'S' || map[xy.y][xy.x] == 'W' || map[xy.y][xy.x] == 'E')

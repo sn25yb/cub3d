@@ -44,7 +44,6 @@ void	free_game(t_game *game)
 
 void	exit_game(t_game *game, int code)
 {
-	(void) game;
 	print_msg(code);
 	free_game(game);
 	exit(code);

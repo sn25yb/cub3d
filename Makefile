@@ -26,12 +26,16 @@ SRCDIR2 = ./srcs/yubshin/
 
 SRCS = main.c \
 	   exit.c \
+	   event.c \
+	   draw.c \
 	   $(SRCDIR1)map.c \
 	   $(SRCDIR1)setting.c \
 	   $(SRCDIR1)valid.c \
 	   $(SRCDIR1)lib.c \
 	   $(SRCDIR1)lib.c \
 	   $(SRCDIR3)inventory.c \
+	   $(SRCDIR3)map2d.c \
+	   $(SRCDIR3)image2d.c \
 	   $(SRCDIR2)image3d.c \
 
 

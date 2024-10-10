@@ -1,5 +1,15 @@
 #include "cub3d.h"
 
+void	init(t_game *game)
+{
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		exit_game(game, EXTRA);
+	game->win = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "baobao");
+	if (!game->win)
+		exit_game(game, EXTRA);
+}
+
 int	main (int argc, char *argv[])
 {
 	t_game	game;
@@ -9,17 +19,10 @@ int	main (int argc, char *argv[])
 	//valid_map
 	ft_memset(&game, 0, sizeof(t_game));
 	check_valid(&game, argc, argv);
-	game.mlx = mlx_init();
-	if (!game.mlx)
-		exit_game(&game, EXTRA);
-
+	init(&game);
 	// image 및 지도 add
 	add(&game, argv[1]);
 
-	game.win = mlx_new_window(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "baobao");
-	if (!game.win)
-		exit_game(&game, EXTRA);
-	
 	/* display */
 	// mlx_clear_window(game.mlx, game.win);
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.wall[0], 0, 32);
@@ -39,7 +42,10 @@ int	main (int argc, char *argv[])
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.inventory[0], 0, 100);
 	// mlx_put_image_to_window(game.mlx, game.win, game.image.inventory[1], 0, 150);
 	/* hook & loop */
-	// mlx_hook(game_info->win, KEY_PRESS, 0, &event_wt_user, &game_info);
+	draw_images(&game);
+	mlx_hook(game.win, KEY_PRESS, 0, &event_wt_user, &game);
+	mlx_hook(game.win, MOUSE_RELEASE, 0, &mouse_release, &game);
+	mlx_hook(game.win, MOUSE_MOVE, 0, &mouse_motion, &game);
 	mlx_hook(game.win, DESTROY_NOTIFY, 0, &destroy_game, &game);
 	// mlx_loop_hook(game_info->mlx, &event_wo_user, &game_info);
 	mlx_loop(game.mlx);

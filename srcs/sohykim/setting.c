@@ -92,6 +92,82 @@ t_err	add_map(t_game *game, int fd)
 	return (EXIT_SUCCESS);
 }
 
+char	*ft_strchrset(char *str, char *set)
+{
+	int		index;
+	char	*target;
+
+	index = 0;
+	while (str[index])
+	{
+		target = ft_strchr(set, str[index]);
+		if (target)
+			return (target);
+		index++;
+	}
+	return (NULL);
+}
+
+
+t_coord	make_coord(int x, int y)
+{
+	t_coord	xy;
+
+	xy.y = y;
+	xy.x = x;
+	return (xy);
+}
+
+t_coord		dir_to_coord(int dir)
+{
+	const double dr[4] = {0, 0, -1, 1};
+	const double dc[4] = {1, -1, 0, 0};
+
+	if (dir == 'E')
+		return (make_coord(dr[0], dc[0]));
+	else if (dir == 'W')
+		return (make_coord(dr[1], dc[1]));
+	else if (dir == 'S')
+		return (make_coord(dr[2], dc[2]));
+	else
+		return (make_coord(dr[3], dc[3]));
+	return (make_coord(0, 0));
+}
+
+
+void	add_player(t_game *game)
+{
+	int			id;
+	char		*target;
+
+	id = 0;
+	while (game->map[id])
+	{
+		target = ft_strchrset(game->map[id], "EWSN");
+		if (target)
+		{
+			game->player.pos = make_coord(id, target - game->map[id]);
+			game->player.dir = dir_to_coord(target - game->map[id]);
+			break ;
+		}
+		id++;
+	}
+}
+
+void	add_2dmap(t_game *game)
+{
+	game->minimap.mlx = game->mlx;
+	game->minimap.win = game->win;
+	game->minimap.player.dir.y = game->player.dir.y;
+	game->minimap.player.dir.x = game->player.dir.x;
+	game->minimap.player.pos.y = game->player.pos.y;
+	game->minimap.player.dir.x = game->player.pos.x;
+	if (add_image2d(&game->minimap))
+		exit_game(game, IMG_FAILED);
+	if (add_map2d(&game->minimap, game->map))
+		exit_game(game, EXTRA);
+}
+
 void	add(t_game *game, char *file)
 {
 	int		fd;
@@ -106,13 +182,15 @@ void	add(t_game *game, char *file)
 	// printf("info: %d\n", code);
 	if (!code)
 		code = add_map(game, fd);
+	close(fd);
 	if (!code)
 		code = check_validmap(game->map);
 	// printf("map: %d\n", code);
-	close(fd);
 	if (code)
 		exit_game(game, code);
+	add_player(game);
 	add_image(game);
+	add_2dmap(game);
 	// printf("img: %d\n", code);
 	// add_image;
 }

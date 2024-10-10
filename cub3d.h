@@ -18,6 +18,10 @@
 # define DESTROY_NOTIFY 17
 # define KEY_RELEASE 3
 # define KEY_PRESS 2
+# define MOUSE_PRESS 4
+# define MOUSE_RELEASE 5
+# define MOUSE_MOVE 6
+
 # define KEY_UP 13
 # define KEY_DOWN 1
 # define KEY_LEFT 0
@@ -91,5 +95,9 @@ t_objs	get_num_objs(char c);
 char	**arrcpy(char **arr);
 t_err   check_validmap(char **map);
 void	add_image_inventory(t_game *game);
+int		event_wt_user(int keycode, t_game *game);
+void    draw_images(t_game *game);
+int		mouse_motion(int x, int y, t_game *game);
+int		mouse_release(int button, int x, int y, t_game *game);
 
 #endif

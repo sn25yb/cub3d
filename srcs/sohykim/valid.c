@@ -11,6 +11,7 @@ void	check_valid(t_game *game, int argc, char **argv)
 		exit_game(game, ARG_FAILED);
 	if (ft_memcmp(argv[1] + len - 4, ".cub", 5))
 		exit_game(game, ARG_FAILED);
+	
 }
 
 t_err	check_num(int num, char *str)
@@ -18,6 +19,8 @@ t_err	check_num(int num, char *str)
 	char	*s;
 	int		code;
 
+	if (num < 0 || num > 255)
+		return (MAP_FAILED);
 	s = ft_itoa(num);
 	code = EXIT_SUCCESS;
 	if (!s)

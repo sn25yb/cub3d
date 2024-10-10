@@ -102,5 +102,9 @@ int		add_wall(t_game *game, char *file, int index);
 int		destroy_game(t_game *game);
 int 	isit_inventory(t_queues inv, t_objs num);
 void	pop_target(t_queues *inv, t_objs num);
+t_objs	get_num_objs(char c);
+char	**arrcpy(char **arr);
+t_err   check_validmap(char **map);
+
 
 #endif

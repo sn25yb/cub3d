@@ -28,6 +28,11 @@ char	**arrcpy(char **arr)
 		while (index < size)
 		{
 			ret[index] = ft_strdup(arr[index]);
+			if (!ret[index])
+			{
+				free_array(ret);
+				return (NULL);
+			}
 			index++;
 		}
 	}

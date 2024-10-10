@@ -45,7 +45,7 @@ t_err	add_info(t_game *game, int fd)
 	return (EXIT_SUCCESS);
 }
 
-int	get_num_objs(char c)
+t_objs	get_num_objs(char c)
 {
 	const char	id[11] = " dwbckLAFHR";
 	int			index;
@@ -106,6 +106,8 @@ void	add(t_game *game, char *file)
 	// printf("info: %d\n", code);
 	if (!code)
 		code = add_map(game, fd);
+	if (!code)
+		code = check_validmap(game->map);
 	// printf("map: %d\n", code);
 	close(fd);
 	if (code)

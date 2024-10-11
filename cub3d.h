@@ -10,9 +10,10 @@
 # include "libft/libft.h"
 # include "ft_err.h"
 
-# include "srcs/sohykim/map2d/map2d.h"
 # include "libgnl/get_next_line.h"
 # include "queue/queue.h"
+# include "base/pair.h"
+# include "srcs/sohykim/map2d/map2d.h"
 # include "srcs/yubshin/image3d.h"
 
 # define DESTROY_NOTIFY 17
@@ -47,22 +48,14 @@ typedef enum e_objs
 	RUIBAO
 }	t_objs;
 
-typedef struct s_coord
-{
-	double y;
-	double x;
-}	t_coord;
-
-
-
 // EA 1,0
 // WE -1,0
 // NO 0, 1
 //SO 0, -1
 typedef struct s_player
 {
-	t_coord pos; 
-	t_coord dir;
+	t_pair_dbl	pos; 
+	t_pair_dbl	dir;
 }	t_player;
 
 typedef struct s_game

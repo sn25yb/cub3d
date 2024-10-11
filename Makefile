@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 LDFLAGS = -L./libft \
 		  -L./mlx \
 		  -L./libgnl \
@@ -23,6 +23,7 @@ MLXFLAG = -framework OpenGL -framework AppKit
 SRCDIR1 = ./srcs/sohykim/
 SRCDIR3 = ./srcs/sohykim/map2d/
 SRCDIR2 = ./srcs/yubshin/
+BASE = ./base/
 
 SRCS = main.c \
 	   exit.c \
@@ -37,7 +38,8 @@ SRCS = main.c \
 	   $(SRCDIR3)map2d.c \
 	   $(SRCDIR3)image2d.c \
 	   $(SRCDIR2)image3d.c \
-
+	   $(BASE) pair.c \
+	#    $(SRCDIR2)texture3d.c \
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)

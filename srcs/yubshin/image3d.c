@@ -43,5 +43,5 @@ void	add_image(t_game *game)
 {
 	add_image_character(game);
 	add_image_object(game);
-	add_image_inventory(game);
+	// add_image_inventory(game);
 }

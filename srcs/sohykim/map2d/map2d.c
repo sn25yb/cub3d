@@ -2,10 +2,10 @@
 
 int add_map2d(t_map *map, char **src)
 {
-    t_pair  xy;
+    t_pair_int  xy;
     int     id;
 
-    ft_memset(&xy, 0, sizeof(t_pair));
+    ft_memset(&xy, 0, sizeof(t_pair_int));
     while (src[xy.y])
     {
         if ((int)ft_strlen(src[xy.y]) > xy.x)

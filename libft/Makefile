@@ -1,56 +1,86 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CPPFLAGS = -Ilibft.h
-SRCS = ft_isalpha.c \
-	  ft_isdigit.c \
-	  ft_isalnum.c \
-	  ft_isascii.c \
-	  ft_isprint.c \
-	  ft_strlen.c \
-	  ft_memset.c \
-	  ft_bzero.c \
-	  ft_memcpy.c \
-	  ft_memmove.c \
-	  ft_strlcpy.c \
-	  ft_strlcat.c \
-	  ft_toupper.c \
-	  ft_tolower.c \
-	  ft_strchr.c \
-	  ft_strrchr.c \
-	  ft_strncmp.c \
-	  ft_memchr.c \
-	  ft_memcmp.c \
-	  ft_strnstr.c \
-	  ft_atoi.c \
-	  ft_calloc.c \
-	  ft_strdup.c \
-	  ft_substr.c \
-	  ft_strjoin.c \
-	  ft_strtrim.c \
-	  ft_split.c \
-	  ft_itoa.c \
-	  ft_strmapi.c \
-	  ft_striteri.c  \
-	  ft_putchar_fd.c \
-	  ft_putstr_fd.c \
-	  ft_putendl_fd.c \
-	  ft_putnbr_fd.c \
+CPPFLAGS = -I./libft \
+			-I./queue \
+			-I./libgnl \
+			-I./base
 
-OBJS = $(SRCS:.c=.o)
+BASE = ./base
+LIBFT = ./libft
+GNL = ./libgnl
+QUEUE = ./queue
+
+SRCS1 = $(LIBFT)/ft_isalpha.c \
+	  $(LIBFT)/ft_isdigit.c \
+	  $(LIBFT)/ft_isalnum.c \
+	  $(LIBFT)/ft_isascii.c \
+	  $(LIBFT)/ft_isprint.c \
+	  $(LIBFT)/ft_strlen.c \
+	  $(LIBFT)/ft_memset.c \
+	  $(LIBFT)/ft_bzero.c \
+	  $(LIBFT)/ft_memcpy.c \
+	  $(LIBFT)/ft_memmove.c \
+	  $(LIBFT)/ft_strlcpy.c \
+	  $(LIBFT)/ft_strlcat.c \
+	  $(LIBFT)/ft_toupper.c \
+	  $(LIBFT)/ft_tolower.c \
+	  $(LIBFT)/ft_strchr.c \
+	  $(LIBFT)/ft_strrchr.c \
+	  $(LIBFT)/ft_strncmp.c \
+	  $(LIBFT)/ft_memchr.c \
+	  $(LIBFT)/ft_memcmp.c \
+	  $(LIBFT)/ft_strnstr.c \
+	  $(LIBFT)/ft_atoi.c \
+	  $(LIBFT)/ft_calloc.c \
+	  $(LIBFT)/ft_strdup.c \
+	  $(LIBFT)/ft_substr.c \
+	  $(LIBFT)/ft_strjoin.c \
+	  $(LIBFT)/ft_strtrim.c \
+	  $(LIBFT)/ft_split.c \
+	  $(LIBFT)/ft_itoa.c \
+	  $(LIBFT)/ft_strmapi.c \
+	  $(LIBFT)/ft_striteri.c  \
+	  $(LIBFT)/ft_putchar_fd.c \
+	  $(LIBFT)/ft_putstr_fd.c \
+	  $(LIBFT)/ft_putendl_fd.c \
+	  $(LIBFT)/ft_putnbr_fd.c \
+
+SRCS2 = $(BASE)/lib.c \
+	  $(BASE)/pair.c
+
+SRCS3 = $(GNL)/get_next_line.c
+SRCS4 = $(QUEUE)/queue.c
+
+OBJS1 = $(patsubst $(LIBFT)/%.c, $(LIBFT)/%.o, $(SRCS1))
+OBJS2 = $(patsubst $(BASE)/%.c, $(BASE)/%.o, $(SRCS2))
+OBJS3 = $(patsubst $(GNL)/%.c, $(GNL)/%.o, $(SRCS3))
+OBJS4 = $(patsubst $(QUEUE)/%.c, $(QUEUE)/%.o, $(SRCS4))
+
 NAME = libft.a
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
-	ar -rcs $@ $?
+$(NAME) : $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4)
+	ar -rcs $@ $^
 
-bonus : $(NAME)
+$(LIBFT)%.o: $(LIBFT)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $?
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $?
+$(BASE)%.o: $(BASE)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $?
+
+$(GNL)%.o: $(GNL)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $?
+
+$(QUEUE)%.o: $(QUEUE)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $?
+
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS1)
+	rm -f $(OBJS2)
+	rm -f $(OBJS3)
+	rm -f $(OBJS4)
 
 fclean: clean
 	rm -f $(NAME)
@@ -58,4 +88,4 @@ fclean: clean
 re : fclean
 	make all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

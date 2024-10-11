@@ -2,16 +2,11 @@
 # define QUEUE_H
 # include <stdlib.h>
 # include "../ft_err.h"
-
-typedef struct  s_pair
-{
-    int x;
-    int y;
-}   t_pair;
+# include "../base/pair.h"
 
 typedef struct  s_queue
 {
-	t_pair 	xy;
+	t_pair_int 	xy;
 	int		num;
 	struct s_queue	*next;
 }	t_queue;
@@ -21,10 +16,9 @@ typedef struct  s_queues
 	struct s_queue	*head;
 }	t_queues;
 
-t_pair  	make_pair(int x, int y);
-t_queue 	*create_queue(t_pair xy);
+t_queue 	*create_queue(t_pair_int xy);
 void		free_queues(t_queues *q);
-int			push(t_queues **q, t_pair xy);
+int			push(t_queues **q, t_pair_int xy);
 void		pop(t_queues *q);
 int			pushnum(t_queues **q, int num);
 

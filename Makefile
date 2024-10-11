@@ -2,20 +2,14 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 LDFLAGS = -L./libft \
 		  -L./mlx \
-		  -L./libgnl \
-		  -L./queue \
 
 LDLIBS = -lft \
 		 -lmlx \
-		 -lgnl \
-		 -lqueue \
 		 -lm
 
 CPPFLAGS = -I. \
 		   -I./libft \
 		   -I./mlx \
-		   -I./libgnl \
-		   -I./queue \
 		   -MMD -MP
 
 MLXFLAG = -framework OpenGL -framework AppKit
@@ -32,13 +26,11 @@ SRCS = main.c \
 	   $(SRCDIR1)map.c \
 	   $(SRCDIR1)setting.c \
 	   $(SRCDIR1)valid.c \
-	   $(SRCDIR1)lib.c \
-	   $(SRCDIR1)lib.c \
+	   $(SRCDIR1)rule.c \
 	   $(SRCDIR3)inventory.c \
 	   $(SRCDIR3)map2d.c \
 	   $(SRCDIR3)image2d.c \
 	   $(SRCDIR2)image3d.c \
-	   $(BASE) pair.c \
 	#    $(SRCDIR2)texture3d.c \
 
 OBJS = $(SRCS:.c=.o)
@@ -50,8 +42,6 @@ all : $(NAME)
 $(NAME): $(OBJS)
 	make -C mlx
 	make -C libft
-	make -C queue
-	make -C libgnl
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(MLXFLAG) -o $@ $^
 
 -include $(DEPS)
@@ -71,16 +61,12 @@ $(SRCDIR3)%.o : $(SRCDIR3)%.c
 clean :
 	make clean -C mlx
 	make clean -C libft
-	make clean -C queue
-	make clean -C libgnl
 	rm -f $(OBJS)
 	rm -f $(DEPS)
 
 fclean : clean
 	rm -f libft/libft.a
 	rm -f mlx/libmlx.a
-	rm -f queue/libqueue.a
-	rm -f libgnl/libgnl.a
 	rm -f $(NAME)
 
 re : fclean

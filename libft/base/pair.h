@@ -13,8 +13,7 @@ typedef struct s_pair_dbl
 	double x;
 }	t_pair_dbl;
 
-t_pair_int	make_pair(int x, int y);
-// t_pair_dbl	make_coord_int(int x, int y);
-t_pair_dbl	make_coord(double x, double y);
+t_pair_int	make_pair_int(int x, int y);
+t_pair_dbl	make_pair_dbl(double x, double y);
 
 #endif 

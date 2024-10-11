@@ -1,6 +1,6 @@
 #include "queue.h"
 
-t_queue 	*create_queue(t_pair xy)
+t_queue 	*create_queue(t_pair_int xy)
 {
 	t_queue	*new;
 
@@ -50,7 +50,7 @@ void	free_queues(t_queues *q)
 	free(q);
 }
 
-int	push(t_queues **q, t_pair xy)
+int	push(t_queues **q, t_pair_int xy)
 {
 	t_queue	*last;
 	t_queue	*new;
@@ -78,7 +78,7 @@ int	pushnum(t_queues **q, int num)
 	t_queue	*last;
 	t_queue	*new;
 
-	new = create_queue(make_pair(0, 0));
+	new = create_queue(make_pair_int(0, 0));
 	new->num = num;
 	if (!new)
 		return (EXTRA);

@@ -31,7 +31,7 @@ t_boolean   check_right(char *line, int id)
     return (FALSE);
 }
 
-t_boolean   check_bottom(char **check, t_pair xy)
+t_boolean   check_bottom(char **check, t_pair_int xy)
 {
     int len;
 
@@ -49,7 +49,7 @@ t_boolean   check_bottom(char **check, t_pair xy)
     return (FALSE);
 }
 
-t_boolean   check_top(char **check, t_pair xy)
+t_boolean   check_top(char **check, t_pair_int xy)
 {
     int len;
 
@@ -68,13 +68,13 @@ t_boolean   check_top(char **check, t_pair xy)
 
 t_err   is_surrbywall(char **map)
 {
-    t_pair  xy;
+    t_pair_int  xy;
     char    **check;
 
     check = arrcpy(map);
     if (!check)
         return (EXTRA);
-    ft_memset(&xy, 0, sizeof(t_pair));
+    ft_memset(&xy, 0, sizeof(t_pair_int));
     while (map[xy.y])
     {
         xy.x = 0;
@@ -104,11 +104,11 @@ t_err   is_surrbywall(char **map)
 
 t_err   has_validobj(char **map)
 {
-    t_pair  xy;
+    t_pair_int  xy;
     int     objs[11];
     t_objs  id;
 
-    ft_memset(&xy, 0, sizeof(t_pair));
+    ft_memset(&xy, 0, sizeof(t_pair_int));
     ft_memset(objs, 0, sizeof(objs));
     while (map[xy.y])
     {

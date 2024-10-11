@@ -1,8 +1,8 @@
 #ifndef MAP2D_H
 # define MAP2D_H
 # include "inventory.h"
-# include "../../../libft/libft.h"
-# include "../../../ft_err.h"
+# include "../../../libft/libft/libft.h"
+# include "../../../libft/ft_err.h"
 # include "../../../mlx/mlx.h"
 # include <stdio.h>
 // EA 1,0
@@ -12,13 +12,14 @@
 
 typedef struct s_star
 {
-	t_pair  pos;
-    t_pair  dir;
+	t_pair_int  pos;
+    t_pair_int  dir;
 }	t_star;
 
 typedef struct s_img2d
 {
     void    *wall;
+    void    *empty;
     void    *way;
     void    *player;
     void    *object[11];

@@ -7,12 +7,12 @@
 # include <stdio.h>
 
 # include "mlx/mlx.h"
-# include "libft/libft.h"
-# include "ft_err.h"
+# include "libft/libft/libft.h"
+# include "libft/ft_err.h"
 
-# include "libgnl/get_next_line.h"
-# include "queue/queue.h"
-# include "base/pair.h"
+# include "libft/libgnl/get_next_line.h"
+# include "libft/queue/queue.h"
+# include "libft/base/pair.h"
 # include "srcs/sohykim/map2d/map2d.h"
 # include "srcs/yubshin/image3d.h"
 
@@ -92,5 +92,6 @@ int		event_wt_user(int keycode, t_game *game);
 void    draw_images(t_game *game);
 int		mouse_motion(int x, int y, t_game *game);
 int		mouse_release(int button, int x, int y, t_game *game);
-
+char	*ft_strchrset(char *str, char *set);
+t_boolean	get_objs(t_queues *inv, t_objs objs);
 #endif

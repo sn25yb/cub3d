@@ -92,66 +92,42 @@ t_err	add_map(t_game *game, int fd)
 	return (EXIT_SUCCESS);
 }
 
-char	*ft_strchrset(char *str, char *set)
-{
-	int		index;
-	char	*target;
-
-	index = 0;
-	while (str[index])
-	{
-		target = ft_strchr(set, str[index]);
-		if (target)
-			return (target);
-		index++;
-	}
-	return (NULL);
-}
-
-
-t_coord	make_coord(int x, int y)
-{
-	t_coord	xy;
-
-	xy.y = y;
-	xy.x = x;
-	return (xy);
-}
-
-t_coord		dir_to_coord(int dir)
+t_pair_dbl		dir_to_coord(int dir)
 {
 	const double dr[4] = {0, 0, -1, 1};
 	const double dc[4] = {1, -1, 0, 0};
 
 	if (dir == 'E')
-		return (make_coord(dr[0], dc[0]));
+		return (make_pair_dbl(dc[0], dr[0]));
 	else if (dir == 'W')
-		return (make_coord(dr[1], dc[1]));
+		return (make_pair_dbl(dc[1], dr[1]));
 	else if (dir == 'S')
-		return (make_coord(dr[2], dc[2]));
+		return (make_pair_dbl(dc[2], dr[2]));
 	else
-		return (make_coord(dr[3], dc[3]));
-	return (make_coord(0, 0));
+		return (make_pair_dbl(dc[3], dr[3]));
 }
 
 
 void	add_player(t_game *game)
 {
-	int			id;
+	t_pair_int		xy;
 	char		*target;
 
-	id = 0;
-	while (game->map[id])
+	xy.y = 0;
+	while (game->map[xy.y])
 	{
-		target = ft_strchrset(game->map[id], "EWSN");
+		target = ft_strchrset(game->map[xy.y], "EWSN");
 		if (target)
 		{
-			game->player.pos = make_coord(id, target - game->map[id]);
-			game->player.dir = dir_to_coord(target - game->map[id]);
-			break ;
+			xy.x = target - game->map[xy.y];
+			game->player.pos = make_pair_dbl(xy.y, xy.x);
+			game->player.dir = dir_to_coord(game->map[xy.y][xy.x]);
+			game->map[xy.y][xy.x] = '0';
+			return ;
 		}
-		id++;
+		xy.y++;
 	}
+	// exit_game(game, MAP_FAILED);
 }
 
 void	add_2dmap(t_game *game)

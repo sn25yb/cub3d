@@ -38,3 +38,19 @@ char	**arrcpy(char **arr)
 	}
 	return (ret);
 }
+
+char	*ft_strchrset(char *str, char *set)
+{
+	int		index;
+	char	*target;
+
+	index = 0;
+	while (str[index])
+	{
+		target = ft_strchr(set, str[index]);
+		if (target)
+			return (&str[index]);
+		index++;
+	}
+	return (NULL);
+}

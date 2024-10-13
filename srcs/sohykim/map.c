@@ -12,7 +12,7 @@ t_boolean   check_left(char *line, int id)
     // printf("left\n");
     while (id >= 0 && line[id])
     {
-        if (line[id] == '1')
+        if (is_wall(line[id]))
             return (TRUE);
         id--;
     }
@@ -24,7 +24,7 @@ t_boolean   check_right(char *line, int id)
     // printf("right\n");
     while (line[id])
     {
-        if (line[id] == '1')
+        if (is_wall(line[id]))
             return (TRUE);
         id++;
     }
@@ -41,7 +41,7 @@ t_boolean   check_bottom(char **check, t_pair_int xy)
         len = ft_strlen(check[xy.y]);
         if (len <= xy.x)
             return (FALSE);
-        if (check[xy.y][xy.x] == '1')
+        if (is_wall(check[xy.y][xy.x]))
             return (TRUE);
         else if (check)
         xy.y++;
@@ -59,7 +59,7 @@ t_boolean   check_top(char **check, t_pair_int xy)
         len = ft_strlen(check[xy.y]);
         if (len <= xy.x)
             return (FALSE);
-        if (check[xy.y][xy.x] == '1')
+        if (is_wall(check[xy.y][xy.x]))
             return (TRUE);
         xy.y--;
     }
@@ -102,10 +102,11 @@ t_err   is_surrbywall(char **map)
     return (EXIT_SUCCESS);
 }
 
+
 t_err   has_validobj(char **map)
 {
     t_pair_int  xy;
-    int     objs[11];
+    int     objs[10];
     t_objs  id;
 
     ft_memset(&xy, 0, sizeof(t_pair_int));
@@ -114,7 +115,7 @@ t_err   has_validobj(char **map)
     {
         while (map[xy.y][xy.x] == ' ')
             xy.x++;
-        while (map[xy.y][xy.x] && map[xy.y][xy.x] != '1')
+        while (map[xy.y][xy.x] && !is_wall(map[xy.y][xy.x]))
         {
             id = get_num_objs(map[xy.y][xy.x]);
             // printf("%d %d\n", xy.y, xy.x);
@@ -128,7 +129,7 @@ t_err   has_validobj(char **map)
                     {
                         int ny = dr[i] + xy.y;
                         int nx = dc[i] + xy.x;
-                        if (ny < 0 || nx < 0 || !map[ny])
+                        if (ny < 0 || nx < 0 || !map[ny] || (int)ft_strlen(map[ny]) <= xy.x)
                             continue ;
                         if (!is_wall(map[ny][nx]) && map[ny][nx] != ' ' && map[ny][nx])
                             return (MAP_FAILED);
@@ -137,34 +138,39 @@ t_err   has_validobj(char **map)
                 else if (map[xy.y][xy.x] == 'N' || map[xy.y][xy.x] == 'S' || map[xy.y][xy.x] == 'W' || map[xy.y][xy.x] == 'E')
                     objs[id]++;
                 else if (map[xy.y][xy.x] != '0')
+                {
+                    // printf("fail: %c\n", map[xy.y][xy.x]);
                     return (MAP_FAILED);
+                }
             }
-            else if (id != door)
+            else
                 objs[id]++;
             if (objs[id] > 1)
                 return (MAP_FAILED);
             xy.x++;
         }
-        if (map[xy.y][xy.x++] == '1')
+        if (is_wall(map[xy.y][xy.x++]))
             continue ;
         xy.y++;
         xy.x = 0;
     }
     for (int i = 0; i < 11; i++)
     {
-        if (i != door && !objs[i])
+        if (!objs[i])
             return (MAP_FAILED);
     }
     // printf("obj true\n");
     return (EXIT_SUCCESS);
 }
 
+// 플레이어 경로 상에 모든 루트가 존재하는가?
 t_err   check_validroute(char   **map)
 {
     (void) map;
     return (EXIT_SUCCESS);
 }
 
+// wall이 항상 '0' 나 다른 오브젝트와 연결되어 있어야함.
 t_err   check_validdoor(char **map)
 {
     (void) map;
@@ -175,11 +181,17 @@ t_err   check_validmap(char **map)
 {
     t_err   code;
 
+
     code = is_surrbywall(map);
+    printf("code: %d\n", code);
     if (!code)
         code = has_validobj(map);
+    printf("code: %d\n", code);
+    
     if (!code)
         code = check_validroute(map);
+    printf("code: %d\n", code);
+    
     if (!code)
         code = check_validdoor(map);
     return (code);

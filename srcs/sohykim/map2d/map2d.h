@@ -22,7 +22,10 @@ typedef struct s_img2d
     void    *empty;
     void    *way;
     void    *player;
-    void    *object[11];
+	void	*door;
+	void	*start;
+	void	*logo;
+    void    *object[10];
 }   t_img2d;
 
 

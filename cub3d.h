@@ -40,7 +40,6 @@ typedef enum e_objs
 	boots,
 	carrot,
 	kangbao,
-	door,
 	LEBAO,
 	AIBAO,
 	FUBAO,
@@ -50,13 +49,20 @@ typedef enum e_objs
 
 // EA 1,0
 // WE -1,0
-// NO 0, 1
-//SO 0, -1
+// NO 0, -1
+//SO 0, 1
+
 typedef struct s_player
 {
 	t_pair_dbl	pos; 
 	t_pair_dbl	dir;
 }	t_player;
+
+typedef struct s_key
+{
+	t_pair_int	pos;
+	t_boolean	on;
+}	t_key;
 
 typedef struct s_game
 {
@@ -68,6 +74,9 @@ typedef struct s_game
 	t_texture	texture;
 	t_inventory	inventory;
 	t_map		minimap;
+	t_key		mouse;
+	t_key		button;
+	t_boolean	start_flag;
 }	t_game;
 
 int		inventory(t_game *game);
@@ -94,4 +103,6 @@ int		mouse_motion(int x, int y, t_game *game);
 int		mouse_release(int button, int x, int y, t_game *game);
 char	*ft_strchrset(char *str, char *set);
 t_boolean	get_objs(t_queues *inv, t_objs objs);
+void	draw_startscreen(t_game *game);
+
 #endif

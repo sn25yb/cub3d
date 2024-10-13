@@ -47,7 +47,7 @@ t_err	add_info(t_game *game, int fd)
 
 t_objs	get_num_objs(char c)
 {
-	const char	id[11] = " dwbckLAFHR";
+	const char	id[10] = " wbckLAFHR";
 	int			index;
 
 	index = 10;
@@ -120,7 +120,7 @@ void	add_player(t_game *game)
 		if (target)
 		{
 			xy.x = target - game->map[xy.y];
-			game->player.pos = make_pair_dbl(xy.y, xy.x);
+			game->player.pos = make_pair_dbl(xy.x, xy.y);
 			game->player.dir = dir_to_coord(game->map[xy.y][xy.x]);
 			game->map[xy.y][xy.x] = '0';
 			return ;

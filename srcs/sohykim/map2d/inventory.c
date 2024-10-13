@@ -7,6 +7,7 @@ int isit_inventory(t_queues inv, int num)
 	node = inv.head;
 	while (node)
 	{
+		// printf("has %d \n", node->num);
 		if (node->num == num)
 			return (TRUE);
 		node = node->next;
@@ -24,7 +25,7 @@ void	pop_target(t_queues *inv, int num)
 		return ;
 	if (node->num == num)
 	{
-		inv->head = NULL;
+		inv->head = inv->head->next;
 		free(node);
 	}
 	else
@@ -34,6 +35,7 @@ void	pop_target(t_queues *inv, int num)
 			if (node->next->num == num)
 			{
 				next = node->next->next;
+				// printf("pop %d \n", node->next->num);
 				free(node->next);
 				node->next = next;
 				break ;

@@ -25,7 +25,7 @@ typedef struct s_img2d
 	void	*door;
 	void	*start;
 	void	*logo;
-    void    *object[10];
+    void    *object[11];
 }   t_img2d;
 
 

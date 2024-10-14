@@ -1,198 +1,38 @@
 #include "../cub3d.h"
 
-t_boolean   is_wall(char c)
+t_pair_int	make_dir(t_pair_int xy, int dir)
 {
-    if (c == '1' || c == 'd')
-        return (TRUE);
-    return (FALSE);
+	t_pair_int	ret;
+	const int	dr[5] = {0, -1, 1, 0, 0};
+	const int	dc[5] = {0, 0, 0, -1, 1};
+
+	ret = make_pair_int(xy.x + dc[dir], xy.y + dr[dir]);
+	return (ret);
 }
 
-t_boolean   check_left(char *line, int id)
-{
-    // printf("left\n");
-    while (id >= 0 && line[id])
-    {
-        if (is_wall(line[id]))
-            return (TRUE);
-        id--;
-    }
-    return (FALSE);
-}
-
-t_boolean   check_right(char *line, int id)
-{
-    // printf("right\n");
-    while (line[id])
-    {
-        if (is_wall(line[id]))
-            return (TRUE);
-        id++;
-    }
-    return (FALSE);
-}
-
-t_boolean   check_bottom(char **check, t_pair_int xy)
-{
-    int len;
-
-    // printf("bottom\n");
-    while (check[xy.y])
-    {
-        len = ft_strlen(check[xy.y]);
-        if (len <= xy.x)
-            return (FALSE);
-        if (is_wall(check[xy.y][xy.x]))
-            return (TRUE);
-        else if (check)
-        xy.y++;
-    }
-    return (FALSE);
-}
-
-t_boolean   check_top(char **check, t_pair_int xy)
-{
-    int len;
-
-    // printf("top\n");
-    while (xy.y >= 0 && check[xy.y])
-    {
-        len = ft_strlen(check[xy.y]);
-        if (len <= xy.x)
-            return (FALSE);
-        if (is_wall(check[xy.y][xy.x]))
-            return (TRUE);
-        xy.y--;
-    }
-    return (FALSE);
-}
-
-t_err   is_surrbywall(char **map)
-{
-    t_pair_int  xy;
-    char    **check;
-
-    check = arrcpy(map);
-    if (!check)
-        return (EXTRA);
-    ft_memset(&xy, 0, sizeof(t_pair_int));
-    while (map[xy.y])
-    {
-        xy.x = 0;
-        while (map[xy.y][xy.x] == ' ')
-            xy.x++;
-        while (map[xy.y][xy.x])
-        {
-            // printf("%d %d %c\n", xy.y, xy.x, map[xy.y][xy.x]);
-            if (!is_wall(map[xy.y][xy.x]))
-            {
-                if (!check_bottom(check, xy) || !check_top(check, xy) || \
-                !check_right(check[xy.y], xy.x) || !check_left(check[xy.y], xy.x))
-                {
-                    free_array(check);
-                    return (MAP_FAILED);
-                }
-                check[xy.y][xy.x] = '1';
-            }
-            xy.x++;
-        }
-        xy.y++;
-    }
-    free_array(check);
-    // printf("wall true\n");
-    return (EXIT_SUCCESS);
-}
-
-
-t_err   has_validobj(char **map)
-{
-    t_pair_int  xy;
-    int     objs[10];
-    t_objs  id;
-
-    ft_memset(&xy, 0, sizeof(t_pair_int));
-    ft_memset(objs, 0, sizeof(objs));
-    while (map[xy.y])
-    {
-        while (map[xy.y][xy.x] == ' ')
-            xy.x++;
-        while (map[xy.y][xy.x] && !is_wall(map[xy.y][xy.x]))
-        {
-            id = get_num_objs(map[xy.y][xy.x]);
-            // printf("%d %d\n", xy.y, xy.x);
-            if (!id)
-            {
-                if (map[xy.y][xy.x] == ' ')
-                {
-                    int dr[4] = {-1, 1, 0, 0};
-                    int dc[4] = {0,0,-1, 1};
-                    for (int i = 0; i < 4; i++)
-                    {
-                        int ny = dr[i] + xy.y;
-                        int nx = dc[i] + xy.x;
-                        if (ny < 0 || nx < 0 || !map[ny] || (int)ft_strlen(map[ny]) <= xy.x)
-                            continue ;
-                        if (!is_wall(map[ny][nx]) && map[ny][nx] != ' ' && map[ny][nx])
-                            return (MAP_FAILED);
-                    }
-                }
-                else if (map[xy.y][xy.x] == 'N' || map[xy.y][xy.x] == 'S' || map[xy.y][xy.x] == 'W' || map[xy.y][xy.x] == 'E')
-                    objs[id]++;
-                else if (map[xy.y][xy.x] != '0')
-                {
-                    // printf("fail: %c\n", map[xy.y][xy.x]);
-                    return (MAP_FAILED);
-                }
-            }
-            else
-                objs[id]++;
-            if (objs[id] > 1)
-                return (MAP_FAILED);
-            xy.x++;
-        }
-        if (is_wall(map[xy.y][xy.x++]))
-            continue ;
-        xy.y++;
-        xy.x = 0;
-    }
-    for (int i = 0; i < 11; i++)
-    {
-        if (!objs[i])
-            return (MAP_FAILED);
-    }
-    // printf("obj true\n");
-    return (EXIT_SUCCESS);
-}
-
-// 플레이어 경로 상에 모든 루트가 존재하는가?
-t_err   check_validroute(char   **map)
-{
-    (void) map;
-    return (EXIT_SUCCESS);
-}
-
-// wall이 항상 '0' 나 다른 오브젝트와 연결되어 있어야함.
-t_err   check_validdoor(char **map)
-{
-    (void) map;
-    return (EXIT_SUCCESS);
-}
-
-t_err   check_validmap(char **map)
+t_err   check_validmap(char **map, t_pair_dbl *pos)
 {
     t_err   code;
 
-
+	// 벽에 둘러쌓여있는가?
+	// '1'과 'd', ' '가 아니면 좌우상하에 '1'이나 'd'가 존재해야한다.
     code = is_surrbywall(map);
-    printf("code: %d\n", code);
+    // printf("code1: %d\n", code);
+	//개수가 맞게 존재하는가?
     if (!code)
-        code = has_validobj(map);
-    printf("code: %d\n", code);
-    
+        code = check_object(map);
+    printf("code2: %d\n", code);
+    //player가 오브젝트에 도달가능한가?
+	//player가 외부문에 도달가능한가?
     if (!code)
-        code = check_validroute(map);
-    printf("code: %d\n", code);
-    
+        code = check_player(map, pos);
+    printf("code3: %d\n", code);
     if (!code)
-        code = check_validdoor(map);
+        code = check_door(map);
+    printf("code4: %d\n", code);
+    if (!code)
+        code = check_exit(map);
+    printf("code5: %d\n", code);
     return (code);
 }
+

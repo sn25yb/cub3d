@@ -9,6 +9,7 @@ t_queue 	*create_queue(t_pair_int xy)
 	{
 		new->xy = xy;
 		new->next = 0;
+		new->num = 0;
 	}
 	return (new);	
 }
@@ -50,7 +51,7 @@ void	free_queues(t_queues *q)
 	free(q);
 }
 
-int	push(t_queues **q, t_pair_int xy)
+int	push(t_queues *q, t_pair_int xy)
 {
 	t_queue	*last;
 	t_queue	*new;
@@ -58,22 +59,15 @@ int	push(t_queues **q, t_pair_int xy)
 	new = create_queue(xy);
 	if (!new)
 		return (EXTRA);
-	if (!*q)
-		*q = create_queues();
-	if (!*q)
-	{
-		free_queue(new);
-		return (EXTRA);
-	}
-	last = _last((*q)->head);
+	last = _last(q->head);
 	if (!last)
-		(*q)->head = new;
+		q->head = new;
 	else
 		last->next = new;
 	return (EXIT_SUCCESS);
 }
 
-int	pushnum(t_queues **q, int num)
+int	pushnum(t_queues *q, int num)
 {
 	t_queue	*last;
 	t_queue	*new;
@@ -82,16 +76,9 @@ int	pushnum(t_queues **q, int num)
 	new->num = num;
 	if (!new)
 		return (EXTRA);
-	if (!*q)
-		*q = create_queues();
-	if (!*q)
-	{
-		free_queue(new);
-		return (EXTRA);
-	}
-	last = _last((*q)->head);
+	last = _last(q->head);
 	if (!last)
-		(*q)->head = new;
+		q->head = new;
 	else
 		last->next = new;
 	return (EXIT_SUCCESS);
@@ -105,6 +92,19 @@ void	pop(t_queues *q)
 	if (!q || !q->head)
 		return ;
 	target = q->head->next;
-	free_queue(q->head);
+	free(q->head);
 	q->head = target;
+}
+#include <stdio.h>
+void	print_queue(t_queues *q)
+{
+	t_queue	*node;
+
+	node = q->head;
+	printf("print------queue\n");
+	while (node)
+	{
+		printf("%d %d\n", node->xy.y, node->xy.x);
+		node = node->next;
+	}
 }

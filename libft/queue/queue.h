@@ -18,8 +18,10 @@ typedef struct  s_queues
 
 t_queue 	*create_queue(t_pair_int xy);
 void		free_queues(t_queues *q);
-int			push(t_queues **q, t_pair_int xy);
+int			push(t_queues *q, t_pair_int xy);
 void		pop(t_queues *q);
-int			pushnum(t_queues **q, int num);
+int			pushnum(t_queues *q, int num);
+void		free_queue(t_queue	*q);
+void	print_queue(t_queues *q);
 
 #endif

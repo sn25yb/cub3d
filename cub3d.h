@@ -44,7 +44,8 @@ typedef enum e_objs
 	AIBAO,
 	FUBAO,
 	HUIBAO,
-	RUIBAO
+	RUIBAO,
+	exit1
 }	t_objs;
 
 // EA 1,0
@@ -64,6 +65,20 @@ typedef struct s_key
 	t_boolean	on;
 }	t_key;
 
+typedef struct s_lcycle
+{
+	/* data */
+	t_boolean	start_flag;
+	t_boolean	exit_flag;
+	t_pair_int	exit_pos;
+}	t_lcycle;
+
+typedef struct s_keys
+{
+	t_key	mouse;
+	t_key	btn;
+}	t_keys;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -74,10 +89,10 @@ typedef struct s_game
 	t_texture	texture;
 	t_inventory	inventory;
 	t_map		minimap;
-	t_key		mouse;
-	t_key		button;
-	t_boolean	start_flag;
+	t_keys		key;
+	t_lcycle	lcycle;
 }	t_game;
+
 
 int		inventory(t_game *game);
 int		is_valid(t_game *game);
@@ -95,7 +110,7 @@ int 	isit_inventory(t_queues inv, int num);
 void	pop_target(t_queues *inv, int num);
 t_objs	get_num_objs(char c);
 char	**arrcpy(char **arr);
-t_err   check_validmap(char **map);
+t_err   check_validmap(char **map, t_pair_dbl *pos);
 void	add_image_inventory(t_game *game);
 int		event_wt_user(int keycode, t_game *game);
 void    draw_images(t_game *game);
@@ -104,5 +119,14 @@ int		mouse_release(int button, int x, int y, t_game *game);
 char	*ft_strchrset(char *str, char *set);
 t_boolean	get_objs(t_queues *inv, t_objs objs);
 void	draw_startscreen(t_game *game);
+t_err	check_door(char **map);
+t_err	check_object(char **map);
+t_pair_int	make_dir(t_pair_int xy, int dir);
+t_boolean	count_objs(int objs[11]);
+t_err		check_player(char **map, t_pair_dbl *pos);
+t_err		is_surrbywall(char **map);
+t_err	check_door(char **map);
+t_err	check_exit(char **map);
+void	pick_objs(int objs[11], char c);
 
 #endif

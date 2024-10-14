@@ -9,6 +9,7 @@ int add_objimg2d(t_map *map)
     // map->image.object[2] = mlx_xpm_file_to_image(map->mlx, "./srcs/sohykim/map2d/textures/boots.xpm", &size[0], &size[1]);
     // map->image.object[3] = mlx_xpm_file_to_image(map->mlx, "./srcs/sohykim/map2d/textures/carrot.xpm", &size[0], &size[1]);
     // map->image.object[4] = mlx_xpm_file_to_image(map->mlx, "./srcs/sohykim/map2d/textures/kangbao.xpm", &size[0], &size[1]);
+    map->image.object[10] = mlx_xpm_file_to_image(map->mlx, "./textures/2d/door.xpm", &size[0], &size[1]);
     map->image.object[1] = mlx_xpm_file_to_image(map->mlx, "./textures/2d/obj.xpm", &size[0], &size[1]);
     map->image.object[2] = mlx_xpm_file_to_image(map->mlx, "./textures/2d/obj.xpm", &size[0], &size[1]);
     map->image.object[3] = mlx_xpm_file_to_image(map->mlx, "./textures/2d/obj.xpm", &size[0], &size[1]);

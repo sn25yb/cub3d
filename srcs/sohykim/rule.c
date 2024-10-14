@@ -18,11 +18,13 @@ t_boolean	get_objs(t_queues *inv, t_objs objs)
 {
 	t_objs	preq;
 
+	if (objs == exit1 || objs == 0)
+		return (FALSE);
 	preq = find_preq(objs);
 	if (!preq)
 	{
-		pushnum(&inv, objs);
-		printf("pick up object %d\n", objs);
+		pushnum(inv, objs);
+		// printf("pick up object %d\n", objs);
 		return (TRUE);
 	}
 	if (!isit_inventory(*inv, preq))
@@ -30,6 +32,6 @@ t_boolean	get_objs(t_queues *inv, t_objs objs)
 	if (objs == RUIBAO && isit_inventory(*inv, HUIBAO))
 		return (FALSE);
 	pop_target(inv, preq);
-	printf("pick up panda %d\n", objs);
+	// printf("pick up panda %d\n", objs);
 	return (TRUE);
 }

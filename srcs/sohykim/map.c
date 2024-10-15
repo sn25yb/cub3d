@@ -21,18 +21,18 @@ t_err   check_validmap(char **map, t_pair_dbl *pos)
 	//개수가 맞게 존재하는가?
     if (!code)
         code = check_object(map);
-    printf("code2: %d\n", code);
+    // printf("code2: %d\n", code);
     //player가 오브젝트에 도달가능한가?
 	//player가 외부문에 도달가능한가?
     if (!code)
         code = check_player(map, pos);
-    printf("code3: %d\n", code);
+    // printf("code3: %d\n", code);
     if (!code)
         code = check_door(map);
-    printf("code4: %d\n", code);
+    // printf("code4: %d\n", code);
     if (!code)
         code = check_exit(map);
-    printf("code5: %d\n", code);
+    // printf("code5: %d\n", code);
     return (code);
 }
 

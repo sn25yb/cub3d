@@ -45,14 +45,14 @@ void	pop_target(t_queues *inv, int num)
 	}
 }
 
-void	add_image_inventory(t_game *game)
-{
-    int size[2];
+// void	add_image_inventory(t_game *game)
+// {
+//     int size[2];
 
-    game->inventory.image[0] = mlx_xpm_file_to_image(game->mlx, "textures/inventory_folded.xpm", &size[0], &size[1]);
-    if (!game->inventory.image[0])
-        exit_game(game, IMG_FAILED);
-    game->inventory.image[1] = mlx_xpm_file_to_image(game->mlx, "textures/inventory_open.xpm", &size[0], &size[1]);
-    if (!game->inventory.image[1])
-        exit_game(game, IMG_FAILED);
-}
+//     game->inventory.image[0] = mlx_xpm_file_to_image(game->mlx, "textures/inventory_folded.xpm", &size[0], &size[1]);
+//     if (!game->inventory.image[0])
+//         exit_game(game, IMG_FAILED);
+//     game->inventory.image[1] = mlx_xpm_file_to_image(game->mlx, "textures/inventory_open.xpm", &size[0], &size[1]);
+//     if (!game->inventory.image[1])
+//         exit_game(game, IMG_FAILED);
+// }

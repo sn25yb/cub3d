@@ -13,6 +13,7 @@ void	change_pos(t_player *p, int keycode)
 		rad += M_PI / 2L;
 	p->pos.x += cos(rad);
 	p->pos.y += sin(rad);
+	// printf("\npos: %f %f\n", p->pos.y, p->pos.x);
 }
 
 void	collect_pandas(t_game *game)
@@ -54,12 +55,12 @@ void	change_dir(t_pair_dbl *dir, double x)
 	t_pair_dbl	conv;
 
 	conv = *dir;
-	// SCREEN_WIDTH / 2 : pi/2 = x : ??
-	rad = x * M_PI / SCREEN_WIDTH;
+	// SCREEN_WIDTH / 2 : pi/2 = x - 320 : ??
+	rad = -1 * (x - SCREEN_WIDTH / 2) * M_PI / SCREEN_WIDTH / 2;
 	dir->x = conv.x * cos(rad) + sin(rad) * conv.y;
 	dir->y = conv.y * cos(rad) - sin(rad) * conv.x;
 	size = sqrt(dir->x * dir->x + dir->y * dir->y);
-	printf("%f %f %f/n", size, dir->x, dir->y);
+	printf("\ndir: %f %f\n", dir->x, dir->y);
 	// dir->x /= size;
 	// dir->y /= size;
 }
@@ -69,7 +70,8 @@ int		mouse_motion(int x, int y, t_game *game)
 	// printf("pos stored: %d %d\n", game->mouse.pos.x, game->mouse.pos.y);
 	if (game->key.mouse.on == FALSE)
 		return (0);
-	printf("pos functioned: %d %d\n", x, y);
+	(void) y;
+	// printf("pos functioned: %d %d\n", x, y);
 	change_dir(&game->player.dir, x);
 	mlx_mouse_move(game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	mlx_mouse_get_pos(game->win, &game->key.mouse.pos.x, &game->key.mouse.pos.y);
@@ -120,8 +122,8 @@ void	draw_startscreen(t_game *game)
 	size.y = SCREEN_HEIGHT - SCREEN_HEIGHT / 4;
 
 	mlx_clear_window(game->mlx, game->win);
-	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.start, size.x, size.y);
+	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.start.image, size.x, size.y);
 	size.x = (SCREEN_WIDTH - 515) / 2;
 	size.y = SCREEN_HEIGHT / 5;
-	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.logo, size.x, size.y);
+	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.logo.image, size.x, size.y);
 }

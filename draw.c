@@ -1,16 +1,16 @@
 # include "cub3d.h"
 
-void    *select_image(char what, t_img2d imgs)
+void    *select_image(char what, t_imgs2d imgs)
 {
     if (what == ' ')
-        return imgs.empty;
+        return imgs.empty.image;
     else if (what == '0')
-        return imgs.way;
+        return imgs.way.image;
     else if (what == '1')
-        return imgs.wall;
+        return imgs.wall.image;
 	else if (what == 'd')
-		return imgs.door;
-    return imgs.object[get_num_objs(what)];
+		return imgs.door.image;
+    return imgs.object[get_num_objs(what)].image;
 }
 
 void    draw_bg(t_game *game)
@@ -58,13 +58,37 @@ void    draw_map(t_game *game)
 	}
 }
 
-void	rotate_image()
+t_img2d convert_image(void *mlx, t_img2d src, t_pair_dbl dir)
 {
+	t_img2d	ret;
+	t_pair_int	xy;
+
+	(void) dir;
+	ret.image = mlx_new_image(mlx, src.size.x, src.size.y);
+	ret.addr = (unsigned int *)mlx_get_data_addr(ret.image, &ret.bpp, &ret.size_l, &ret.endian);
+	xy.y = 0;
+	while (xy.y < src.size.y)
+	{
+		xy.x = 0;
+		while (xy.x < src.size.x)
+		{
+			ret.addr[xy.y * ret.size_l + 4 * xy.x] = src.addr[xy.y * src.size_l + 4 * xy.x];
+			xy.x++;
+		}
+		xy.y++;
+	}
+	return ret;
 }
 
 void	draw_player(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.player, 5 * 10, 5 * 10 + SCREEN_HEIGHT - 11 * 10);
+	t_img2d	player;
+	// t_img2d	conv;
+
+	player = game->minimap.image.player;
+	// conv = convert_image(game->mlx, player, game->player.dir);
+	mlx_put_image_to_window(game->mlx, game->win, game->minimap.image.player.image, 5 * 10, 5 * 10 + SCREEN_HEIGHT - 11 * 10);
+	// mlx_destroy_image(game->mlx, conv.image);
 }
 
 void    draw_minimap(t_game *game)

@@ -3,8 +3,8 @@ SO  ./textures/3d/south.xpm
 WE ./textures/3d/west.xpm
 EA ./textures/3d/east.xpm
 
-F 220,100,0
-C 225,30,0
+F 0,255,0
+C 0,0,255
 
 
 

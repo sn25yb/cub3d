@@ -106,6 +106,7 @@ void    draw_inventory(t_game *game)
 void    draw_images(t_game *game)
 {
     mlx_clear_window(game->mlx, game->win);
+    draw_3dmap(game);
     draw_minimap(game);
-    draw_inventory(game);
+	draw_inventory(game);
 }

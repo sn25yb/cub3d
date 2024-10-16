@@ -22,6 +22,7 @@ int	main (int argc, char *argv[])
 	init(&game);
 	// image 및 지도 add
 	add(&game, argv[1]);
+	init_texture3d(&game);
 
 	/* display */
 	// mlx_clear_window(game.mlx, game.win);

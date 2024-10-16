@@ -2,13 +2,13 @@
 
 int	add_wall(t_game *game, char *file, int index)
 {
-	int	size[2];
+	// int	size[2];
 
-	if (game->image.wall[index])
-		return (MAP_FAILED);
-	game->image.wall[index] = mlx_xpm_file_to_image(game->mlx, file, &size[0], &size[1]);
-	if (!game->image.wall[index])
-		return (EXTRA);
+	// if (game->rnd.tex3d.wall[index].img)
+	// 	return (MAP_FAILED);
+	// game->rnd.tex3d.wall[index].img = mlx_xpm_file_to_image(game->mlx, file, &size[0], &size[1]);
+	// if (!game->rnd.tex3d.wall[index].img)
+	// 	return (EXTRA);
 	return (EXIT_SUCCESS);
 }
 
@@ -94,7 +94,7 @@ t_err	add_map(t_game *game, int fd)
 
 t_pair_dbl		dir_to_coord(int dir)
 {
-	const double dr[4] = {0, 0, -1, 1};
+	const double dr[4] = {0, 0, 1, -1}; //yubshin: 북쪽이랑 남쪽 좌표 바꿈
 	const double dc[4] = {1, -1, 0, 0};
 
 	if (dir == 'E')
@@ -166,8 +166,6 @@ void	add(t_game *game, char *file)
 	if (code)
 		exit_game(game, code);
 	add_player(game);
-	add_image(game);
 	add_2dmap(game);
 	// printf("img: %d\n", code);
-	// add_image;
 }

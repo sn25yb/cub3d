@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g
+# CFLAGS = -Wall -Werror -Wextra -g
 LDFLAGS = -L./libft \
 		  -L./mlx \
 
@@ -35,8 +35,9 @@ SRCS = main.c \
 	   $(SRCDIR4)object.c \
 	   $(SRCDIR4)wall.c \
 	   $(SRCDIR3)image2d.c \
-	   $(SRCDIR2)image3d.c \
-	#    $(SRCDIR2)texture3d.c \
+	   $(SRCDIR2)add_image3d.c \
+	   $(SRCDIR2)get_image3d_addr.c \
+	   $(SRCDIR2)rendering.c \
 
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)

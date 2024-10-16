@@ -14,7 +14,7 @@
 # include "libft/queue/queue.h"
 # include "libft/base/pair.h"
 # include "srcs/sohykim/map2d/map2d.h"
-# include "srcs/yubshin/image3d.h"
+# include "srcs/yubshin/rendering.h"
 
 # define DESTROY_NOTIFY 17
 # define KEY_RELEASE 3
@@ -30,8 +30,8 @@
 # define KEY_ENTER 36
 # define KEY_ESC 53
 
-# define SCREEN_WIDTH 640
-# define SCREEN_HEIGHT 480
+// # define SCREEN_WIDTH 640
+// # define SCREEN_HEIGHT 480
 
 typedef enum e_objs
 {
@@ -85,8 +85,7 @@ typedef struct s_game
 	void		*win;
 	char		**map;
 	t_player	player;
-	t_image		image;
-	t_texture	texture;
+	t_rnd		rnd;
 	t_inventory	inventory;
 	t_map		minimap;
 	t_keys		key;
@@ -102,7 +101,7 @@ void	check_valid(t_game *game, int argc, char **argv);
 void	free_array(char **arr);
 char    *ft_realloc(char *ptr, size_t size);
 void	add(t_game *game, char *file);
-void	add_image(t_game *game);
+// void	add_image(t_game *game);
 t_err	check_info(t_game *game, char **info);
 int		add_wall(t_game *game, char *file, int index);
 int		destroy_game(t_game *game);
@@ -128,5 +127,10 @@ t_err		is_surrbywall(char **map);
 t_err	check_door(char **map);
 t_err	check_exit(char **map);
 void	pick_objs(int objs[11], char c);
+
+//rendering(3d)
+void	add_imgs3d(t_game *game);
+void	init_texture3d(t_game *game);
+void	draw_3dmap(t_game *game);
 
 #endif

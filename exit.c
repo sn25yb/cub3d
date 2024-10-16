@@ -13,10 +13,10 @@ void	free_img(void	**ptr, int size)
 	}
 }
 
-void	free_imgs(t_image *imgs)
-{
-	free_img(imgs->object, 5);
-}
+// void	free_imgs(t_image *imgs)
+// {
+// 	free_img(imgs->object, 5);
+// }
 
 void	print_msg(int code)
 {
@@ -36,8 +36,8 @@ void	free_game(t_game *game)
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	game->win = NULL;
-	if (game->mlx)
-		free_imgs(&game->image);
+	// if (game->mlx)
+	// 	free_imgs(&game->image);
 	free(game->mlx);
 	free_array(game->map);
 }

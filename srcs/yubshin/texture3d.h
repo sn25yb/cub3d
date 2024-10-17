@@ -38,6 +38,8 @@ typedef struct s_tex3d
 	int				bpp; //bits per pixel
 	int				line; //size_line
 	int 			endian;
+
+	char			**argv_wall;
 }	t_tex3d;
 
 #endif

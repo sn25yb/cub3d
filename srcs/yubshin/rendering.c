@@ -7,28 +7,46 @@ void	init_rnd(t_game *game)
 	game->rnd.cal.pos.y = game->player.pos.y;
 	game->rnd.cal.dir.x = game->player.dir.x;
 	game->rnd.cal.dir.y = game->player.dir.y;
-	// 방향에 따라 평면 벡터를 설정
-	if (game->rnd.cal.dir.x > 0) // 동쪽
-	{
-		game->rnd.cal.plane.x = 0; // 동쪽에서 바라볼 때 수직으로
-		game->rnd.cal.plane.y = 0.66; // 동쪽에서 위쪽으로
-	} 
-	else if (game->rnd.cal.dir.x < 0) // 서쪽
-	{
-			game->rnd.cal.plane.x = 0; // 서쪽에서 바라볼 때 수직으로
-		game->rnd.cal.plane.y = -0.66; // 서쪽에서 아래쪽으로
+	// // 방향에 따라 평면 벡터를 설정
+	// if (game->rnd.cal.dir.x > 0) // 동쪽
+	// {
+	// 	game->rnd.cal.plane.x = 0; // 동쪽에서 바라볼 때 수직으로
+	// 	game->rnd.cal.plane.y = 0.66; // 동쪽에서 위쪽으로
+	// } 
+	// else if (game->rnd.cal.dir.x < 0) // 서쪽
+	// {
+	// 		game->rnd.cal.plane.x = 0; // 서쪽에서 바라볼 때 수직으로
+	// 	game->rnd.cal.plane.y = -0.66; // 서쪽에서 아래쪽으로
 
-	} 
-	else if (game->rnd.cal.dir.y > 0) // 북쪽
-	{
-		game->rnd.cal.plane.x = -0.66; // 남쪽에서 왼쪽으로
-		game->rnd.cal.plane.y = 0; // 남쪽에서 수평으로
+	// } 
+	// else if (game->rnd.cal.dir.y > 0) // 북쪽
+	// {
+	// 	game->rnd.cal.plane.x = -0.66; // 남쪽에서 왼쪽으로
+	// 	game->rnd.cal.plane.y = 0; // 남쪽에서 수평으로
 
-	}
-	else if (game->rnd.cal.dir.y < 0) // 남쪽
+	// }
+	// else if (game->rnd.cal.dir.y < 0) // 남쪽
+	// {
+	// 	game->rnd.cal.plane.x = 0.66; // 북쪽에서 오른쪽으로
+	// 	game->rnd.cal.plane.y = 0; // 북쪽에서 수평으로
+	// }
+	// else // 방향이 없을 때 기본값
+	// {
+	// 	game->rnd.cal.plane.x = 0;
+	// 	game->rnd.cal.plane.y = 0;
+	// }
+	double dir_length = sqrt(game->rnd.cal.dir.x * game->rnd.cal.dir.x +
+							 game->rnd.cal.dir.y * game->rnd.cal.dir.y);
+		
+	if (dir_length > 0)
 	{
-		game->rnd.cal.plane.x = 0.66; // 북쪽에서 오른쪽으로
-		game->rnd.cal.plane.y = 0; // 북쪽에서 수평으로
+		// 방향 벡터를 정규화
+		double norm_dir_x = game->rnd.cal.dir.x / dir_length;
+		double norm_dir_y = game->rnd.cal.dir.y / dir_length;
+
+		// 방향에 따른 평면 벡터 계산
+		game->rnd.cal.plane.x = -norm_dir_y * 0.66; // 정규화된 방향 벡터에 따라 수직으로
+		game->rnd.cal.plane.y = norm_dir_x * 0.66;  // 정규화된 방향 벡터에 따라 수평으로
 	}
 	else // 방향이 없을 때 기본값
 	{
@@ -56,10 +74,10 @@ void	cal_map_pair(t_cal *cal)
 
 void	cal_deltadist_pair(t_cal *cal)
 {
-	cal->deltadist.x = fabs(1 / cal->raydir.x);
-	cal->deltadist.y = fabs(1 / cal->raydir.y);
-	// cal->delta_dist.x = sqrt(1 + (cal->raydir.y * cal->raydir.y) / (cal->raydir.x * cal->raydir.x));
-	// cal->delta_dist.y = sqrt(1 + (cal->raydir.x * cal->raydir.x) / (cal->raydir.y * cal->raydir.y));
+	// cal->deltadist.x = fabs(1 / cal->raydir.x);
+	// cal->deltadist.y = fabs(1 / cal->raydir.y);
+	cal->deltadist.x = sqrt(1 + (cal->raydir.y * cal->raydir.y) / (cal->raydir.x * cal->raydir.x));
+	cal->deltadist.y = sqrt(1 + (cal->raydir.x * cal->raydir.x) / (cal->raydir.y * cal->raydir.y));
 }
 
 void cal_sidedist_pair(t_cal *cal)
@@ -86,6 +104,34 @@ void cal_step_pair(t_cal *cal)
 		cal->step.y = -1;
 }
 
+int issamedir(t_cal cal)
+{
+	//플레이어는 동쪽을 보고, 오브젝트는 서쪽 이미지
+	if (cal.dir.x > 0 && cal.side == 0 && cal.raydir.x < 0)
+		return (TRUE);
+	//플레이어는 서쪽을 보고, 오브젝트는 동쪽이미지
+	if (cal.dir.x < 0 && cal.side == 0 && cal.raydir.x >= 0)
+		return (TRUE);
+	//플레이어는 북쪽을 보고, 오브젝트는 남쪽이미지
+	if (cal.dir.y > 0 && cal.side && cal.raydir.y >= 0)
+		return (TRUE);
+	//플레이어는 남쪽을 보고, 오브젝트는 북쪽이미지 
+	if (cal.dir.y < 0 && cal.side && cal.raydir.y < 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+int	ismap3dtexture(t_cal cal, char **map, int y, int x)
+{
+	if (!map[y][x])
+		return (FALSE);
+	if (map[y][x] == '1' || map[y][x] == 'd' || map[y][x] == 'e')
+		return (TRUE);
+	if (map[y][x] == 'A' && issamedir(cal))
+		return (TRUE);
+	return (FALSE);
+}
+
 void dda(t_cal *cal, char **map)
 {
 	int hit = 0;
@@ -96,8 +142,8 @@ void dda(t_cal *cal, char **map)
 		{
 			cal->sidedist.x += cal->deltadist.x;
 			cal->map.x += cal->step.x;
-			if (cal->map.x < 0)
-				cal->map.x = 0;
+			// if (cal->map.x < 0)
+				// cal->map.x = 0;
 			cal->side = 0; //동서 벽
 			if (cal->map.x < 0 || !map[cal->map.y][cal->map.x])
 				hit = 1;
@@ -106,13 +152,13 @@ void dda(t_cal *cal, char **map)
 		{
 			cal->sidedist.y += cal->deltadist.y;
 			cal->map.y += cal->step.y;
-			if (cal->map.y < 0)
-				cal->map.y = 0;
+			// if (cal->map.y < 0)
+			// 	cal->map.y = 0;
 			cal->side = 1; //북남 벽
 			if (cal->map.y < 0 || !map[cal->map.y][cal->map.x])
 				hit = 1;
 		}
-		if (map[cal->map.y][cal->map.x] && map[cal->map.y][cal->map.x] == '1')
+		if (ismap3dtexture(*cal, map, cal->map.y, cal->map.x))
 				hit = 1;
 	}
 }
@@ -168,8 +214,8 @@ void	set_texture(t_cal *cal, char **map, t_tex3d tex3d)
 		cal->texture = tex3d.door[0].addr;
 	else if (texnum == 'A')
 		cal->texture = tex3d.character[3][0].addr;
-	else 
-		cal->texture = NULL;
+	// else 
+		// cal->texture = NULL;
 }
 
 void cal_wall_x(t_cal *cal)
@@ -189,7 +235,7 @@ void	drawpixeline(t_cal cal, t_tex3d *tex3d, int x)
 	int			y;
 	int			pixel;
 
-	tex.x = (int)(cal.wall_x * (double)tex3d->widtheight.x);
+	tex.x = (int)((tex3d->widtheight.x - cal.wall_x) * (double)tex3d->widtheight.x);
 	tex.x = tex.x % tex3d->widtheight.x; // tex.x를 texwidth로 나눈 나머지로 제한
 	if ((cal.side == 0 && cal.raydir.x > 0) || (cal.side == 1 && cal.raydir.y < 0))
 		tex.x = tex3d->widtheight.x - tex.x - 1;
@@ -202,8 +248,8 @@ void	drawpixeline(t_cal cal, t_tex3d *tex3d, int x)
 		tex.y = tex.y % tex3d->widtheight.y;
 		texpos += onestep;
 		pixel = cal.texture[tex3d->widtheight.y * tex.y + tex.x];
-		// if (side == 1)
-		// 	color = (color >> 1) & 835571;
+		// if (cal.side == 1)
+		// 	pixel = (pixel >> 1) & 835571;
 		tex3d->display.addr[y * SCREEN_WIDTH + x] = pixel;
 		y++;
 	}

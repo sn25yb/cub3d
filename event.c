@@ -2,18 +2,43 @@
 
 void	change_pos(t_player *p, int keycode)
 {
-	double		rad;
+	double		rad1;
+	double		rad2;
 
-	rad = acos(p->dir.x);
-	if (keycode == KEY_UP)
-		rad += M_PI;
+	rad1 = acos(p->dir.x);
+	rad2 = asin(p->dir.y);
+	if (p->dir.x < 0 && p->dir.y < 0)
+	{
+		rad1 = M_PI + rad2 * -1;
+		rad2 = rad1;
+	}
+	else if (p->dir.x >= 0 && p->dir.y < 0)
+	{
+		rad2 += M_PI * 2;
+		rad1 = rad2;
+	}
+	else if (p->dir.x < 0 && p->dir.y >= 0)
+	{
+		rad1 = M_PI - rad2;
+		rad2 = rad1;
+	}
+	if (keycode == KEY_DOWN)
+	{
+		rad1 += M_PI;
+		rad2 += M_PI;
+	}
 	else if (keycode == KEY_RIGHT)
-		rad += 3L * M_PI / 2;
+	{
+		rad1 += M_PI / 2L;
+		rad2 += M_PI / 2L;
+	}
 	else if (keycode == KEY_LEFT)
-		rad += M_PI / 2L;
-	p->pos.x += cos(rad);
-	p->pos.y += sin(rad);
-	// printf("\npos: %f %f\n", p->pos.y, p->pos.x);
+	{
+		rad1 -= M_PI / 2L;
+		rad2 -= M_PI / 2L;
+	}
+	p->pos.y += sin(rad2);
+	p->pos.x += cos(rad1);
 }
 
 void	collect_pandas(t_game *game)
@@ -56,11 +81,20 @@ void	change_dir(t_pair_dbl *dir, double x)
 
 	conv = *dir;
 	// SCREEN_WIDTH / 2 : pi/2 = x - 320 : ??
+	
+	// -PI / 4 <= rad <= PI / 4
 	rad = -1 * (x - SCREEN_WIDTH / 2) * M_PI / SCREEN_WIDTH / 2;
-	dir->x = conv.x * cos(rad) + sin(rad) * conv.y;
-	dir->y = conv.y * cos(rad) - sin(rad) * conv.x;
+	if (rad < 0)
+	{
+		dir->x = conv.x * cos(-1 * rad) + sin(rad) * conv.y;
+		dir->y = conv.y * cos(-1 * rad) - sin(rad) * conv.x;
+	}
+	else
+	{
+		dir->x = conv.x * cos(rad) + sin(rad) * conv.y;
+		dir->y = conv.y * cos(rad) - sin(rad) * conv.x;
+	}
 	size = sqrt(dir->x * dir->x + dir->y * dir->y);
-	printf("\ndir: %f %f\n", dir->x, dir->y);
 	// dir->x /= size;
 	// dir->y /= size;
 }
@@ -70,11 +104,11 @@ int		mouse_motion(int x, int y, t_game *game)
 	// printf("pos stored: %d %d\n", game->mouse.pos.x, game->mouse.pos.y);
 	if (game->key.mouse.on == FALSE)
 		return (0);
-	(void) y;
 	// printf("pos functioned: %d %d\n", x, y);
 	change_dir(&game->player.dir, x);
 	mlx_mouse_move(game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	mlx_mouse_get_pos(game->win, &game->key.mouse.pos.x, &game->key.mouse.pos.y);
+	draw_images(game);
 
 	// game->player.dir.x += (x - game->mouse.pos.x);
 	// game->player.dir.y += (y - game->mouse.pos.y);

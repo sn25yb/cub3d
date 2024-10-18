@@ -10,7 +10,7 @@ void    *select_image(char what, t_imgs2d imgs)
         return imgs.wall.image;
 	else if (what == 'd')
 		return imgs.door.image;
-    return imgs.object[get_num_objs(what)].image;
+    return imgs.target.image;
 }
 
 void    draw_bg(t_game *game)
@@ -98,9 +98,34 @@ void    draw_minimap(t_game *game)
     draw_player(game);
 }
 
+void	draw_object(t_game *game, t_queue *node, int id)
+{
+	t_img2d	img;
+
+	if (!node)
+		img = game->inventory.img;
+	else
+		img = game->minimap.image.object[node->num];
+	mlx_put_image_to_window(game->mlx, game->win, img.image, SCREEN_WIDTH / 3 + id * img.size.x, SCREEN_HEIGHT - img.size.y - 40);
+}
+
 void    draw_inventory(t_game *game)
 {
-    (void) game;
+    t_queue	*head;
+    t_queue	*node;
+	int		index;
+
+	node = game->inventory.pocket.head;
+	index = 0;
+	while (index < 5)
+	{
+		draw_object(game, node, index);
+		if (node)
+			node = node->next;
+		if (node == head)
+			node = NULL;
+		index++;
+	}
 }
 
 void    draw_images(t_game *game)

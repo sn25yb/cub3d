@@ -57,6 +57,7 @@ typedef struct s_player
 {
 	t_pair_dbl	pos; 
 	t_pair_dbl	dir;
+	double		rad;
 }	t_player;
 
 typedef struct s_key
@@ -110,13 +111,12 @@ void	pop_target(t_queues *inv, int num);
 t_objs	get_num_objs(char c);
 char	**arrcpy(char **arr);
 t_err   check_validmap(char **map, t_pair_dbl *pos);
-void	add_image_inventory(t_game *game);
 int		event_wt_user(int keycode, t_game *game);
 void    draw_images(t_game *game);
 int		mouse_motion(int x, int y, t_game *game);
 int		mouse_release(int button, int x, int y, t_game *game);
 char	*ft_strchrset(char *str, char *set);
-t_boolean	get_objs(t_queues *inv, t_objs objs);
+t_boolean	get_objs(t_game *game, t_objs objs);
 void	draw_startscreen(t_game *game);
 t_err	check_door(char **map);
 t_err	check_object(char **map);
@@ -127,6 +127,7 @@ t_err		is_surrbywall(char **map);
 t_err	check_door(char **map);
 t_err	check_exit(char **map);
 void	pick_objs(int objs[11], char c);
+int		add_inventory2d(t_inventory *inv, void *mlx);
 
 //rendering(3d)
 void	add_imgs3d(t_game *game);

@@ -137,8 +137,10 @@ void	add_2dmap(t_game *game)
 	game->minimap.player.dir.y = game->player.dir.y;
 	game->minimap.player.dir.x = game->player.dir.x;
 	game->minimap.player.pos.y = game->player.pos.y;
-	game->minimap.player.dir.x = game->player.pos.x;
+	game->minimap.player.pos.x = game->player.pos.x;
 	if (add_image2d(&game->minimap))
+		exit_game(game, IMG_FAILED);
+	if (add_inventory2d(&game->inventory, game->mlx))
 		exit_game(game, IMG_FAILED);
 	if (add_map2d(&game->minimap, game->map))
 		exit_game(game, EXTRA);

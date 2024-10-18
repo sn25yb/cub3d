@@ -1,7 +1,8 @@
 #ifndef MAP2D_H
 # define MAP2D_H
-# include "inventory.h"
+# include "../../../libft/queue/queue.h"
 # include "../../../libft/libft/libft.h"
+# include "../../../libft/base/pair.h"
 # include "../../../libft/ft_err.h"
 # include "../../../mlx/mlx.h"
 # include <stdio.h>
@@ -26,6 +27,12 @@ typedef struct s_img2d
 	t_pair_int	size;
 }	t_img2d;
 
+typedef struct s_inventory
+{
+    t_queues    pocket;
+	t_img2d 	img;
+}   t_inventory;
+
 typedef struct s_imgs2d
 {
 	t_img2d	wall;
@@ -35,7 +42,7 @@ typedef struct s_imgs2d
 	t_img2d	door;
 	t_img2d	start;
 	t_img2d	logo;
-	t_img2d	inventory;
+	t_img2d	target;
 	t_img2d	object[11];
 }   t_imgs2d;
 
@@ -47,7 +54,6 @@ typedef struct s_map
 	char		**map;
 	t_star		player;
 	t_imgs2d	image;
-	t_inventory	inventory;
 }	t_map;
 
 int 	add_image2d(t_map *map);

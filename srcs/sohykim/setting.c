@@ -122,6 +122,7 @@ void	add_player(t_game *game)
 			xy.x = target - game->map[xy.y];
 			game->player.pos = make_pair_dbl(xy.x, xy.y);
 			game->player.dir = dir_to_coord(game->map[xy.y][xy.x]);
+			game->player.rad = cal_radian(game->player.dir);
 			game->map[xy.y][xy.x] = '0';
 			return ;
 		}

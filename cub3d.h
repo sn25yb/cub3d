@@ -128,6 +128,7 @@ t_err	check_door(char **map);
 t_err	check_exit(char **map);
 void	pick_objs(int objs[11], char c);
 int		add_inventory2d(t_inventory *inv, void *mlx);
+double	cal_radian(t_pair_dbl dir);
 
 //rendering(3d)
 void	add_imgs3d(t_game *game);

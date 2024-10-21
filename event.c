@@ -110,28 +110,27 @@ void	player_move(t_game *game, int keycode)
 	// printf("%f %f\n", p.pos.y, p.pos.x);
 }
 
-void	change_dir(t_pair_dbl *dir, double x)
+void	change_dir(t_player *p, double x)
 {
-	double		size;
 	double		rad;
 	t_pair_dbl	conv;
 
-	conv = *dir;
+	conv = p->dir;
 	// SCREEN_WIDTH / 2 : pi/2 = x - 320 : ??
 	
 	// -PI / 4 <= rad <= PI / 4
 	rad = -1 * (x - SCREEN_WIDTH / 2) * M_PI / SCREEN_WIDTH / 2;
 	if (rad < 0)
 	{
-		dir->x = conv.x * cos(-1 * rad) + sin(rad) * conv.y;
-		dir->y = conv.y * cos(-1 * rad) - sin(rad) * conv.x;
+		p->dir.x = conv.x * cos(-1 * rad) + sin(rad) * conv.y;
+		p->dir.y = conv.y * cos(-1 * rad) - sin(rad) * conv.x;
 	}
 	else
 	{
-		dir->x = conv.x * cos(rad) + sin(rad) * conv.y;
-		dir->y = conv.y * cos(rad) - sin(rad) * conv.x;
+		p->dir.x = conv.x * cos(rad) + sin(rad) * conv.y;
+		p->dir.y = conv.y * cos(rad) - sin(rad) * conv.x;
 	}
-	size = sqrt(dir->x * dir->x + dir->y * dir->y);
+	p->rad = cal_radian(p->dir);
 	// dir->x /= size;
 	// dir->y /= size;
 }
@@ -141,8 +140,9 @@ int		mouse_motion(int x, int y, t_game *game)
 	// printf("pos stored: %d %d\n", game->mouse.pos.x, game->mouse.pos.y);
 	if (!game->key.mouse.on || game->lcycle.exit_flag)
 		return (0);
+	(void) y;
 	// printf("pos functioned: %d %d\n", x, y);
-	change_dir(&game->player.dir, x);
+	change_dir(&game->player, x);
 	mlx_mouse_move(game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	mlx_mouse_get_pos(game->win, &game->key.mouse.pos.x, &game->key.mouse.pos.y);
 	draw_images(game);

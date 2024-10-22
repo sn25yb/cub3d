@@ -30,6 +30,11 @@
 # define KEY_ENTER 36
 # define KEY_ESC 53
 
+
+# define EAST 0
+# define WEST 1
+# define SOUTH 2
+# define NORTH 3
 // # define SCREEN_WIDTH 640
 // # define SCREEN_HEIGHT 480
 
@@ -45,7 +50,6 @@ typedef enum e_objs
 	FUBAO,
 	HUIBAO,
 	RUIBAO,
-	exit1
 }	t_objs;
 
 // EA 1,0
@@ -85,6 +89,7 @@ typedef struct s_game
 	void		*mlx;
 	void		*win;
 	char		**map;
+	char		*texture_file[4];
 	t_player	player;
 	t_rnd		rnd;
 	t_inventory	inventory;

@@ -7,10 +7,10 @@ t_boolean	is_validdoor(char **map, t_pair_int xy)
 {
 	t_pair_int	nxy;
 	int			index;
-	int			wall[5];
+	int			wall[4];
 
-	index = 0;
-	while (index++ < 4)
+	index = -1;
+	while (++index < 4)
 	{
 		nxy = make_dir(xy, index);
 		if (nxy.y < 0 || nxy.x < 0 || !map[nxy.y] || (int)ft_strlen(map[nxy.y]) <= nxy.x)
@@ -22,9 +22,9 @@ t_boolean	is_validdoor(char **map, t_pair_int xy)
 		else
 			wall[index] = 0;
 	}
-	if (wall[1] + wall[2] == 2 && wall[4] + wall[3] == 0)
+	if (wall[NORTH] && wall[SOUTH] && !wall[EAST] && !wall[WEST])
 		return (TRUE);
-	if (wall[1] + wall[2] == 0 && wall[4] + wall[3] == 2)
+	if (!wall[NORTH] && !wall[SOUTH] && wall[EAST] && wall[WEST])
 		return (TRUE);
 	return (FALSE);
 }
@@ -53,15 +53,20 @@ t_boolean	is_validexit(char **map, t_pair_int xy)
 {
 	t_pair_int	nxy;
 	int			index;
-	int			wall[5];
+	int			wall[4];
+	int			flag;
 
-	index = 0;
-	while (index++ < 4)
+	index = -1;
+	flag = 0;
+	while (++index < 4)
 	{
 		nxy = make_dir(xy, index);
 		if (nxy.y < 0 || nxy.x < 0 || !map[nxy.y] || \
 		(int)ft_strlen(map[nxy.y]) <= nxy.x || map[nxy.y][nxy.x] == ' ')
+		{
+			flag = 1;
 			wall[index] = 0;
+		}
 		else if (map[nxy.y][nxy.x] == 'd' || map[nxy.y][nxy.x] == 'e')
 			return (FALSE);
 		else if (map[nxy.y][nxy.x] == '1')
@@ -69,9 +74,9 @@ t_boolean	is_validexit(char **map, t_pair_int xy)
 		else
 			wall[index] = 0;
 	}
-	if (wall[1] + wall[2] == 2 && wall[4] + wall[3] == 0)
+	if (flag && wall[NORTH] && wall[SOUTH] && !wall[EAST] && !wall[WEST])
 		return (TRUE);
-	if (wall[1] + wall[2] == 0 && wall[4] + wall[3] == 2)
+	if (flag && !wall[NORTH] && !wall[SOUTH] && wall[EAST] && wall[WEST])
 		return (TRUE);
 	return (FALSE);
 }

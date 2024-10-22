@@ -2,10 +2,13 @@
 # define MAP2D_H
 # include "../../../libft/queue/queue.h"
 # include "../../../libft/libft/libft.h"
+# include "../../../libft/base/lib.h"
+# include "../../../libft/libgnl/get_next_line.h"
 # include "../../../libft/base/pair.h"
 # include "../../../libft/ft_err.h"
 # include "../../../mlx/mlx.h"
 # include <stdio.h>
+# include <fcntl.h>
 // EA 1,0
 // WE -1,0
 // NO 0, 1
@@ -39,10 +42,12 @@ typedef struct s_imgs2d
 	t_img2d	empty;
 	t_img2d	way;
 	t_img2d	player;
+	t_img2d	player_conv;
 	t_img2d	door;
 	t_img2d	start;
 	t_img2d	logo;
 	t_img2d	target;
+	t_img2d	exit;
 	t_img2d	object[11];
 }   t_imgs2d;
 

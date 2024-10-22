@@ -19,7 +19,7 @@ t_boolean	get_objs(t_game *game, t_objs objs)
 	t_objs		preq;
 	t_queues	*inv;
 
-	if (objs == exit1 || objs == 0)
+	if (objs == no_obj)
 		return (FALSE);
 	preq = find_preq(objs);
 	inv = &game->inventory.pocket;
@@ -32,7 +32,7 @@ t_boolean	get_objs(t_game *game, t_objs objs)
 	}
 	if (!isit_inventory(*inv, preq))
 		return (FALSE);
-	if (objs == RUIBAO && isit_inventory(*inv, HUIBAO))
+	if (objs == RUIBAO && !isit_inventory(*inv, HUIBAO))
 		return (FALSE);
 	pop_target(inv, preq);
 	if (pushnum(&game->inventory.pocket, objs))

@@ -39,12 +39,12 @@ void	pick_objs(int objs[11], char c)
 		objs[get_num_objs(c)]++;
 }
 
-t_boolean	count_objs(int objs[11])
+t_boolean	count_objs(int objs[10])
 {
 	int	index;
 
 	index = 0;
-	while (++index <= 10)
+	while (++index < 10)
 	{
 		if (objs[index] != 1)
 			return (FALSE);
@@ -76,8 +76,8 @@ t_boolean	check_route(t_queues *q, char **map, char **cpy)
 		pos = q->head->xy;
 		// print_queue(q);
 		pop(q);
-		index = 0;
-		while (++index <= 4)
+		index = -1;
+		while (++index < 4)
 		{
 			npos = make_dir(pos, index);
 			if (npos.y < 0 || npos.x < 0 || !map[npos.y] || \

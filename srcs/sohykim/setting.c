@@ -2,13 +2,9 @@
 
 int	add_wall(t_game *game, char *file, int index)
 {
-	// int	size[2];
-
-	// if (game->rnd.tex3d.wall[index].img)
-	// 	return (MAP_FAILED);
-	// game->rnd.tex3d.wall[index].img = mlx_xpm_file_to_image(game->mlx, file, &size[0], &size[1]);
-	// if (!game->rnd.tex3d.wall[index].img)
-	// 	return (EXTRA);
+	game->texture_file[index] = ft_strdup(file);
+	if (!game->texture_file[index])
+		return (EXTRA);
 	return (EXIT_SUCCESS);
 }
 
@@ -41,21 +37,21 @@ t_err	add_info(t_game *game, int fd)
 			return (MAP_FAILED);
 		if (!add_line(game, &line))
 			cnt++;
+		free(line);
 	}
 	return (EXIT_SUCCESS);
 }
 
 t_objs	get_num_objs(char c)
 {
-	const char	id[11] = " wbckLAFHRe";
+	const char	id[10] = " wbckLAFHR";
 	int			index;
 
 	index = 10;
-	while (index > 0)
+	while (--index > 0)
 	{
 		if (id[index] == c)
 			return (index);
-		index--;
 	}
 	return (index);
 }

@@ -3,8 +3,8 @@
 t_pair_int	make_dir(t_pair_int xy, int dir)
 {
 	t_pair_int	ret;
-	const int	dr[5] = {0, -1, 1, 0, 0};
-	const int	dc[5] = {0, 0, 0, -1, 1};
+	const int	dr[5] = {0, 0, 1, -1};
+	const int	dc[5] = {1, -1, 0, 0};
 
 	ret = make_pair_int(xy.x + dc[dir], xy.y + dr[dir]);
 	return (ret);

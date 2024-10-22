@@ -20,6 +20,7 @@ typedef struct s_rgb
 
 typedef struct s_canvas_3d
 {
+	char			*file;
 	void			*img;
 	unsigned int	*addr;
 }	t_canvas_3d;

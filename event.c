@@ -1,5 +1,29 @@
 #include "cub3d.h"
 
+int	check_escape(t_game *game)
+{
+	t_pair_int	map_pos;
+	int			cnt;
+	t_queue		*node;
+	t_queue		*head;
+
+	head = game->inventory.pocket.head;
+	node = head;
+	cnt = 0;
+	while (node)
+	{
+		if (node->num >= LEBAO && node->num <= RUIBAO)
+			cnt++;
+		node = node->next;
+	}
+	if (cnt != 5)
+		return (EXIT_FAILURE);
+	map_pos = make_pair_int(game->player.pos.x, game->player.pos.y);
+	if (game->map[map_pos.y][map_pos.x] == 'e')
+		game->lcycle.exit_flag = TRUE;
+	return (EXIT_SUCCESS);
+}
+
 double	cal_radian(t_pair_dbl dir)
 {
 	double	rad1;
@@ -99,15 +123,16 @@ void	player_move(t_game *game, int keycode)
 	map_pos = make_pair_int(p.pos.x, p.pos.y);
 	change_pos(&p, keycode);
 	next_map_pos = make_pair_int(p.pos.x, p.pos.y);
-	if (next_map_pos.y < 0 || next_map_pos.x < 0)
+	if (p.pos.y < 0 || p.pos.x < 0)
 		p = game->player;
 	else if (!is_reachable(game->map, next_map_pos.x, next_map_pos.y))
 		p = game->player;
 	else if (!is_reachable(game->map, map_pos.x, next_map_pos.y) && \
 	!is_reachable(game->map, next_map_pos.x, map_pos.y))
 		p = game->player;
+	else if (check_escape(game) && game->map[next_map_pos.y][next_map_pos.x] == 'e')
+		p = game->player;
 	game->player = p;
-	// printf("%f %f\n", p.pos.y, p.pos.x);
 }
 
 void	change_dir(t_player *p, double x)
@@ -119,7 +144,7 @@ void	change_dir(t_player *p, double x)
 	// SCREEN_WIDTH / 2 : pi/2 = x - 320 : ??
 	
 	// -PI / 4 <= rad <= PI / 4
-	rad = -1 * (x - SCREEN_WIDTH / 2) * M_PI / SCREEN_WIDTH / 2;
+	rad = -1 * (x - SCREEN_WIDTH / 2) * M_PI / SCREEN_WIDTH / 4;
 	if (rad < 0)
 	{
 		p->dir.x = conv.x * cos(-1 * rad) + sin(rad) * conv.y;
@@ -182,31 +207,6 @@ void	outro(t_game *game)
 	mlx_string_put(game->mlx, game->win, 800, 300, 0, "game clear");
 }
 
-void	check_end(t_game *game)
-{
-	t_pair_int	map_pos;
-	int			cnt;
-	t_queue		*node;
-	t_queue		*head;
-
-	head = game->inventory.pocket.head;
-	node = head;
-	cnt = 0;
-	while (node)
-	{
-		if (node->num >= LEBAO && node->num <= RUIBAO)
-			cnt++;
-		node = node->next;
-	}
-	if (cnt != 5)
-		return ;
-	map_pos = make_pair_int(game->player.pos.x, game->player.pos.y);
-	if (game->map[map_pos.y][map_pos.x] != 'e')
-		return ;
-	game->lcycle.exit_flag = TRUE;
-	outro(game);
-}
-
 int	event_wt_user(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
@@ -215,15 +215,16 @@ int	event_wt_user(int keycode, t_game *game)
 		return (start_game(game));
 	if (!game->lcycle.start_flag || game->lcycle.exit_flag)
 		return (EXIT_SUCCESS);
-	// printf("pressed\n");
 	if (keycode == KEY_LEFT || keycode == KEY_RIGHT || \
 	keycode == KEY_DOWN || keycode == KEY_UP)
 		player_move(game, keycode);
-	// else if (keycode == 34)
-
-	collect_pandas(game);
-	draw_images(game);
-	check_end(game);
+	if (game->lcycle.exit_flag)
+		outro(game);
+	else
+	{
+		collect_pandas(game);
+		draw_images(game);
+	}
 	return (EXIT_SUCCESS);
 }
 

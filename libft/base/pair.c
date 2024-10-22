@@ -1,4 +1,5 @@
 #include "pair.h"
+#include <stdio.h>
 
 t_pair_int	make_pair_int(int x, int y)
 {

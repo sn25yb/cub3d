@@ -19,6 +19,8 @@ t_err	check_object(char **map)
 			else if (map[xy.y][xy.x] == 'N' || map[xy.y][xy.x] == 'S' || \
 			map[xy.y][xy.x] == 'E' || map[xy.y][xy.x] == 'W')
 				objs[0]++;
+			else if (map[xy.y][xy.x] == 'e')
+				objs[10]++;
 			else if (map[xy.y][xy.x] != '1'  && map[xy.y][xy.x] != ' ' && map[xy.y][xy.x] != '0' && map[xy.y][xy.x] != 'd')
 			{
 				// printf("%c\n", map[xy.y][xy.x]);
@@ -28,7 +30,7 @@ t_err	check_object(char **map)
 		}
 		xy.y++;
 	}
-	if (count_objs(objs) && objs[0] == 1)
+	if (count_objs(objs) && objs[0] == 1 && objs[10] == 1)
 		return (EXIT_SUCCESS);
 	// printf("here\n");
 	return (MAP_FAILED);

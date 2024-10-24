@@ -1,5 +1,6 @@
 CC = cc
 # CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS =  -g
 LDFLAGS = -L./libft \
 		  -L./mlx \
 
@@ -24,12 +25,15 @@ SRCS = main.c \
 	   exit.c \
 	   event.c \
 	   draw.c \
+	   story.c \
 	   $(SRCDIR1)map.c \
 	   $(SRCDIR1)setting.c \
+	   $(SRCDIR1)utils.c \
 	   $(SRCDIR1)rule.c \
 	   $(SRCDIR3)inventory.c \
 	   $(SRCDIR3)map2d.c \
 	   $(SRCDIR4)arg.c \
+	   $(SRCDIR4)map.c \
 	   $(SRCDIR4)door.c \
 	   $(SRCDIR4)player.c \
 	   $(SRCDIR4)object.c \

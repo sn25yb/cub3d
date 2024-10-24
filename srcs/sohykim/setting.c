@@ -1,113 +1,43 @@
-# include "../cub3d.h"
-
-int	add_wall(t_game *game, char *file, int index)
-{
-	game->texture_file[index] = ft_strdup(file);
-	if (!game->texture_file[index])
-		return (EXTRA);
-	return (EXIT_SUCCESS);
-}
-
-// space 에는 탭도 들어가나
-t_err	add_line(t_game *game, char **line)
-{
-	char	**sp;
-	t_err	code;
-
-	sp = ft_split(*line, " \n\t\f\v\r");
-	free(*line);
-	*line = NULL;
-	if (!sp)
-		return (EXTRA);
-	code = check_info(game, sp);
-	free_array(sp);
-	return (code);
-}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setting.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sohykim <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/24 14:34:56 by sohykim           #+#    #+#             */
+/*   Updated: 2024/10/24 14:38:23 by sohykim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "../cub3d.h"
 
 t_err	add_info(t_game *game, int fd)
 {
 	int		cnt;
 	char	*line;
+	int		code;
 
 	cnt = 0;
+	code = EXIT_SUCCESS;
 	while (cnt < 6)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			return (MAP_FAILED);
-		if (!add_line(game, &line))
+		code = add_line(game, &line);
+		if (!code)
 			cnt++;
 		free(line);
+		if (code == MAP_FAILED || code == EXTRA)
+			break ;
 	}
-	return (EXIT_SUCCESS);
+	return (code);
 }
-
-t_objs	get_num_objs(char c)
-{
-	const char	id[10] = " wbckLAFHR";
-	int			index;
-
-	index = 10;
-	while (--index > 0)
-	{
-		if (id[index] == c)
-			return (index);
-	}
-	return (index);
-}
-
-t_err	add_map(t_game *game, int fd)
-{
-	char	*line;
-	char	*gnl;
-	char	*temp;
-
-	line = NULL;
-	gnl = get_next_line(fd);
-	if (!gnl)
-		return (MAP_FAILED);
-	while (gnl)
-	{
-		if (!line)
-			line = gnl;
-		else
-		{
-			temp = ft_strjoin(line, gnl);
-			free(line);
-			free(gnl);
-			if (!temp)
-				return (EXTRA);
-			line = temp;
-		}
-		gnl = get_next_line(fd);
-	}
-	game->map = ft_split(line, "\n");
-	free(line);
-	if (!game->map)
-		return (EXTRA);
-	return (EXIT_SUCCESS);
-}
-
-t_pair_dbl		dir_to_coord(int dir)
-{
-	const double dr[4] = {0, 0, 1, -1}; //yubshin: 북쪽이랑 남쪽 좌표 바꿈
-	const double dc[4] = {1, -1, 0, 0};
-
-	if (dir == 'E')
-		return (make_pair_dbl(dc[0], dr[0]));
-	else if (dir == 'W')
-		return (make_pair_dbl(dc[1], dr[1]));
-	else if (dir == 'S')
-		return (make_pair_dbl(dc[2], dr[2]));
-	else
-		return (make_pair_dbl(dc[3], dr[3]));
-}
-
 
 void	add_player(t_game *game)
 {
 	t_pair_int		xy;
-	char		*target;
+	char			*target;
 
 	xy.y = 0;
 	while (game->map[xy.y])
@@ -124,23 +54,51 @@ void	add_player(t_game *game)
 		}
 		xy.y++;
 	}
-	// exit_game(game, MAP_FAILED);
 }
 
 void	add_2dmap(t_game *game)
 {
 	game->minimap.mlx = game->mlx;
 	game->minimap.win = game->win;
-	game->minimap.player.dir.y = game->player.dir.y;
-	game->minimap.player.dir.x = game->player.dir.x;
-	game->minimap.player.pos.y = game->player.pos.y;
-	game->minimap.player.pos.x = game->player.pos.x;
+	game->minimap.player.dir = make_pair_int(game->player.dir.x, \
+	game->player.dir.y);
+	game->minimap.player.pos = make_pair_int(game->player.pos.x, \
+	game->player.pos.y);
 	if (add_image2d(&game->minimap))
 		exit_game(game, IMG_FAILED);
 	if (add_inventory2d(&game->inventory, game->mlx))
 		exit_game(game, IMG_FAILED);
 	if (add_map2d(&game->minimap, game->map))
 		exit_game(game, EXTRA);
+}
+
+t_err	add_map(t_game *game, int fd)
+{
+	char	*line;
+	char	*gnl;
+	char	*temp;
+	int		code;
+
+	line = NULL;
+	while (!set_next_line(&gnl, fd))
+	{
+		if (!line)
+			line = gnl;
+		else
+		{
+			temp = ft_strjoin(line, gnl);
+			free(line);
+			free(gnl);
+			if (!temp)
+				return (EXTRA);
+			line = temp;
+		}
+	}
+	code = set_map(game, line);
+	free(line);
+	if (!code)
+		return (check_validmap(game->map, &game->player.pos));
+	return (code);
 }
 
 void	add(t_game *game, char *file)
@@ -154,17 +112,11 @@ void	add(t_game *game, char *file)
 	if (fd == -1)
 		exit_game(game, EXTRA);
 	code = add_info(game, fd);
-	// printf("info: %d\n", code);
 	if (!code)
 		code = add_map(game, fd);
-	// printf("map load: %d\n", code);
 	close(fd);
-	if (!code)
-		code = check_validmap(game->map, &game->player.pos);
-	// printf("map valid: %d\n", code);
 	if (code)
 		exit_game(game, code);
 	add_player(game);
 	add_2dmap(game);
-	// printf("img: %d\n", code);
 }

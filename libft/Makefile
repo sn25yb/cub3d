@@ -49,7 +49,8 @@ SRCS2 = $(BASE)/lib.c \
 	  $(BASE)/pair.c
 
 SRCS3 = $(GNL)/get_next_line.c
-SRCS4 = $(QUEUE)/queue.c
+SRCS4 = $(QUEUE)/queue.c \
+		$(QUEUE)/lifecycle.c
 
 OBJS1 = $(patsubst $(LIBFT)/%.c, $(LIBFT)/%.o, $(SRCS1))
 OBJS2 = $(patsubst $(BASE)/%.c, $(BASE)/%.o, $(SRCS2))

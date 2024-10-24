@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   door.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sohykim <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/24 12:51:00 by sohykim           #+#    #+#             */
+/*   Updated: 2024/10/24 12:53:32 by sohykim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../../../cub3d.h"
 
 // 한쪽 방향은 벽 한쪽 방향은 비어 있을 것.
@@ -13,9 +24,9 @@ t_boolean	is_validdoor(char **map, t_pair_int xy)
 	while (++index < 4)
 	{
 		nxy = make_dir(xy, index);
-		if (nxy.y < 0 || nxy.x < 0 || !map[nxy.y] || (int)ft_strlen(map[nxy.y]) <= nxy.x)
+		if (is_forbidden_route(map, nxy.x, nxy.y))
 			return (FALSE);
-		else if (map[nxy.y][nxy.x] == 'd' || map[nxy.y][nxy.x] == 'e' || map[nxy.y][nxy.x] == ' ')
+		else if (map[nxy.y][nxy.x] == 'd' || map[nxy.y][nxy.x] == 'e')
 			return (FALSE);
 		else if (map[nxy.y][nxy.x] == '1')
 			wall[index] = 1;
@@ -41,7 +52,7 @@ t_err	check_door(char **map)
 		while (map[xy.y][xy.x])
 		{
 			if (map[xy.y][xy.x] == 'd' && !is_validdoor(map, xy))
-					return (MAP_FAILED);
+				return (MAP_FAILED);
 			xy.x++;
 		}
 		xy.y++;
@@ -58,21 +69,16 @@ t_boolean	is_validexit(char **map, t_pair_int xy)
 
 	index = -1;
 	flag = 0;
+	ft_memset(wall, 0, sizeof(int) * 4);
 	while (++index < 4)
 	{
 		nxy = make_dir(xy, index);
-		if (nxy.y < 0 || nxy.x < 0 || !map[nxy.y] || \
-		(int)ft_strlen(map[nxy.y]) <= nxy.x || map[nxy.y][nxy.x] == ' ')
-		{
+		if (is_forbidden_route(map, nxy.x, nxy.y))
 			flag = 1;
-			wall[index] = 0;
-		}
 		else if (map[nxy.y][nxy.x] == 'd' || map[nxy.y][nxy.x] == 'e')
 			return (FALSE);
 		else if (map[nxy.y][nxy.x] == '1')
 			wall[index] = 1;
-		else
-			wall[index] = 0;
 	}
 	if (flag && wall[NORTH] && wall[SOUTH] && !wall[EAST] && !wall[WEST])
 		return (TRUE);
@@ -91,7 +97,7 @@ t_err	check_exit(char **map)
 		if (ft_strchr(map[xy.y], 'e'))
 		{
 			xy.x = ft_strchr(map[xy.y], 'e') - map[xy.y];
-			if (is_validexit(map, xy))
+			if (is_validexit(map, xy) && !ft_strchr(map[xy.y] + xy.x + 1, 'e'))
 				return (EXIT_SUCCESS);
 			break ;
 		}

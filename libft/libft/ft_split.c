@@ -9,8 +9,7 @@
 /*   Updated: 2023/09/12 11:22:55 by sohykim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdlib.h>
+#include <libft.h>
 
 int	is_seperator(char ch, char *charset)
 {
@@ -54,18 +53,16 @@ int	ft_arrlen(char *str, char *charset)
 	return (count);
 }
 
-char	*ft_strcpy(char *dest, char *src, int size)
+void	free_arrs(char **arr)
 {
 	int	index;
 
 	index = 0;
-	while (src[index] && index < size)
-	{
-		dest[index] = src[index];
-		index++;
-	}
-	dest[index] = 0;
-	return (dest);
+	if (!arr)
+		return ;
+	while (arr[index])
+		free(arr[index++]);
+	free(arr);
 }
 
 char	**ft_split(char *str, char *charset)
@@ -79,20 +76,20 @@ char	**ft_split(char *str, char *charset)
 	str_copy = str;
 	index = 0;
 	arr_len = ft_arrlen(str, charset);
-	result = (char **)malloc(sizeof(char *) * (arr_len + 1));
-	if (result == NULL)
-		return (0);
-	while (index <= arr_len)
+	result = ft_calloc(arr_len + 1, sizeof(char *));
+	while (result && index < arr_len)
 	{
 		while (is_seperator(*str_copy, charset))
 				str_copy++;
 		str_len = ft_strslen(str_copy, charset);
-		result[index] = (char *)malloc(sizeof(char) * (str_len + 1));
-		if (result[index] == NULL)
+		result[index] = ft_calloc(str_len + 1, sizeof(char));
+		if (!result[index])
+		{
+			free_arrs(result);
 			return (0);
-		ft_strcpy(result[index++], str_copy, str_len);
+		}
+		ft_memcpy(result[index++], str_copy, str_len);
 		str_copy = str_copy + str_len;
 	}
-	result[arr_len] = 0;
 	return (result);
 }

@@ -1,4 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arg.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sohykim <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/24 12:39:59 by sohykim           #+#    #+#             */
+/*   Updated: 2024/10/24 12:42:06 by sohykim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../../../cub3d.h"
+
+int	add_wall(t_game *game, char *file, int index)
+{
+	if (game->texture_file[index])
+		return (MAP_FAILED);
+	game->texture_file[index] = ft_strdup(file);
+	if (!game->texture_file[index])
+		return (EXTRA);
+	return (EXIT_SUCCESS);
+}
 
 void	check_valid(t_game *game, int argc, char **argv)
 {
@@ -11,7 +32,6 @@ void	check_valid(t_game *game, int argc, char **argv)
 		exit_game(game, ARG_FAILED);
 	if (ft_memcmp(argv[1] + len - 4, ".cub", 5))
 		exit_game(game, ARG_FAILED);
-	
 }
 
 t_err	check_num(int num, char *str)
@@ -64,8 +84,6 @@ t_err	check_info(t_game *game, char **info)
 	int			index;
 
 	index = 0;
-	if (!info[0] || !info[1] || info[2])
-		return (MAP_FAILED);
 	while (index < 4)
 	{
 		if (!ft_memcmp(info[0], id[index], ft_strlen(id[index]) + 1))

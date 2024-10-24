@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_err.h                                           :+:      :+:    :+:   */
+/*   lifecycle.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sohykim <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/24 12:32:25 by sohykim           #+#    #+#             */
-/*   Updated: 2024/10/24 12:32:51 by sohykim          ###   ########.fr       */
+/*   Created: 2024/10/24 12:31:08 by sohykim           #+#    #+#             */
+/*   Updated: 2024/10/24 12:31:28 by sohykim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "queue.h"
 
-#ifndef FT_ERR_H
-# define FT_ERR_H
-# define MSG_MAP_FAILED "INVALID MAP FILE"
-# define MSG_ARG_FAILED "INVALID ARGUMENTS"
-
-typedef enum e_err
+t_queue	*create_queue(t_pair_int xy)
 {
-	ARG_FAILED = 2,
-	MAP_FAILED,
-	IMG_FAILED,
-	EXTRA
-}	t_err;
+	t_queue	*new;
 
-#endif
+	new = malloc(sizeof(t_queue));
+	if (new)
+	{
+		new->xy = xy;
+		new->next = 0;
+		new->num = 0;
+	}
+	return (new);
+}
+
+void	free_queue(t_queue	*q)
+{
+	t_queue	*tmp;
+
+	while (q)
+	{
+		tmp = q->next;
+		free(q);
+		q = tmp;
+	}
+}
